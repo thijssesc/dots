@@ -1,0 +1,14 @@
+XF86Audio{Play,Prev,Next}
+  dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotifyd /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.{PlayPause,Previous,Next}
+
+XF86Audio{Mute,LowerVolume,RaiseVolume}
+  /bin/sh ~/.local/scripts/dvl {-t,-d 1, -i 1}
+
+XF86MonBrightness{Down,Up}
+  /bin/sh ~/.local/scripts/bri {-d 5,-i 5}
+
+mod4 + {p,space}
+  /bin/sh ~/.local/scripts/{scs,lck}
+
+F1
+  printf '%s' "help" > /dev/null

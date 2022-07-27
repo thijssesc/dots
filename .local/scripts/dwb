@@ -1,0 +1,24 @@
+#!/usr/bin/env sh
+#
+# Script to format the output of `~/.local/scripts/bar` for dwm bar.
+#
+
+# shellcheck source=/dev/null
+. ~/.local/scripts/bar
+
+format() {
+    if [ -z "$*" ]; then return; fi
+
+    if [ -z "$3" ]; then
+        printf '^c%s^ %s ^c%s^\n' "$1" "$2" "$(colors 7)"
+    elif [ -n "$4" ]; then
+        third="$(echo "$@" | cut -d' ' -f3-)"
+        printf '^c%s^ %s %s^c%s^\n' "$1" "$2" "$third" "$(colors 7)"
+    else
+        printf '^c%s^ %s %s^c%s^\n' "$1" "$2" "$3" "$(colors 7)"
+    fi
+}
+
+res="$("$@")"
+# shellcheck disable=SC2086
+format $res

@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+#
+# Script to re-check for updates with `~/.local/scripts/upt` script'.
+#
+
+# shellcheck disable=SC2009
+if [ "$(ps ax | grep -c upt)" -gt 1 ]; then
+    sel="$(printf '%s\n%s' "yes" "no" \
+        | dmenu -i -p "re-check for updates?")"
+    [ -z "$sel" ] && exit 0
+fi
+
+[ "$sel" = "yes" ] && \
+    kill "$(ps ax | grep upt | sed 1q | awk '{print $1}')" & \
+    upt &

@@ -1,0 +1,41 @@
+#! /usr/bin/env sh
+#
+# $XDG_CONFIG_HOME/bash/taliases
+#
+
+alias ..='cd ..'
+alias c='clear'
+alias cd..='cd ..'
+alias clear='clear && icy'
+alias dr='docker'
+alias dc='docker compose'
+alias diff='diff --color=auto'
+alias e='$EDITOR'
+alias g='git'
+alias grep='grep --color=auto'
+alias h='htop -u $USER'
+alias htop='htop -u $USER'
+alias ll='ls --color=auto -l'
+alias ls='ls --color=auto'
+alias o='orphans'
+alias nnn='nnn -Hd'
+alias p='sudo pacman'
+alias pamcan='pacman'
+alias r='nnn -Hd'
+alias redshift='redshift -l $RS_LAT:$RS_LONG'
+alias ref='shortcuts && . ~/.bashrc'
+alias rt='rtorrent'
+alias sr='sudo ranger'
+alias ss='sudo systemctl'
+alias sv='sudo nvim'
+alias t='st'
+alias v='nvim'
+alias vi='nvim'
+alias vim='nvim'
+alias y='yay'
+alias yarn='yarn --use-yarnrc "$XDG_CONFIG_HOME/yarn/config"'
+alias mvn='mvn -gs "$XDG_CONFIG_HOME/maven/settings.xml"'
+alias mvnDebug='mvnDebug -gs "$XDG_CONFIG_HOME/maven/settings.xml"'
+alias build-brxm='mvn clean install -Dmaven.test.skip=true'
+
+# vim: set syntax=sh:

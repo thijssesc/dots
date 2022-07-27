@@ -1,0 +1,72 @@
+{
+  "border": "pixel",
+  "current_border_width": 3,
+  "floating": "auto_off",
+  "geometry": {
+    "height": 340,
+    "width": 644,
+    "x": 0,
+    "y": 0
+  },
+  "name": "ranger:/home/sjoerd",
+  "percent": 0.5,
+  "swallows": [
+    {
+      "class": "^st\\-256color$",
+      "instance": "^rangerterm$"
+    }
+  ],
+  "type": "con"
+}
+
+{
+  "border": "pixel",
+  "current_border_width": 3,
+  "floating": "auto_off",
+  "layout": "splitv",
+  "percent": 0.5,
+  "type": "con",
+  "nodes": [
+    {
+      "border": "pixel",
+      "current_border_width": 3,
+      "floating": "auto_off",
+      "geometry": {
+        "height": 340,
+        "width": 644,
+        "x": 0,
+        "y": 0
+      },
+      "name": "nnn",
+      "percent": 0.5,
+      "swallows": [
+        {
+          "class": "^st\\-256color$",
+          "instance": "^nnnterm$"
+        }
+      ],
+      "type": "con"
+    },
+    {
+      "border": "pixel",
+      "current_border_width": 3,
+      "floating": "auto_off",
+      "geometry": {
+        "height": 340,
+        "width": 644,
+        "x": 0,
+        "y": 0
+      },
+      "name": "st",
+      "percent": 0.5,
+      "swallows": [
+        {
+          "class": "^st\\-256color$",
+          "instance": "^st\\-256color$"
+        }
+      ],
+      "type": "con"
+    }
+  ]
+}
+

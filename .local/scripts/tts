@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+#
+# Script to setup tint2 for openbox.
+#
+
+trc="$XDG_CONFIG_HOME/tint2/tint2rc"
+on="panel_items = TSC"
+off="panel_items = TC"
+
+if [ "$(grep -c "$on" "$trc")" -eq 1 ]; then
+    sed -i "s/$on/$off/g" "$trc"
+elif [ "$(grep -c "$off" "$trc")" -eq 1 ]; then
+    sed -i "s/$off/$on/g" "$trc"
+fi
+
+killall tint2
+tint2 "$trc"

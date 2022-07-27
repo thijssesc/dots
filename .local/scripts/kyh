@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+#
+# Script to handle keys for `sxiv`.
+#
+
+case "$1" in
+    "y") while read -r file; do wl-copy --type image/png "$file"; done ;;
+esac

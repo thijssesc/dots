@@ -1,0 +1,177 @@
+#!/usr/bin/env sh
+#
+# Script to output system information to a 'bar'.
+#
+
+# shellcheck source=/dev/null
+. ~/.local/scripts/clr
+
+battery() {
+    bat=$(acpi)
+    sta=$(printf '%s' "$bat" | awk '{print $3}' | sed 's/,//g')
+    per=$(printf '%s' "$bat" | awk '{print $4}' | sed 's/,//; s/%//')
+
+    case "$per" in
+        [0-9]|1[0-9])         clr="$(colors 1)"; icn="" ;;
+        2[0-9]|3[0-9]|4[0-9]) clr="$(colors 3)"; icn="" ;;
+        5[0-9]|6[0-9])        clr="$(colors 4)"; icn="" ;;
+        7[0-9]|8[0-9])        clr="$(colors 2)"; icn="" ;;
+        *)                    clr="$(colors 7)"; icn="" ;;
+    esac
+    case "$sta" in
+        "Charging")    icn=" " ;;
+        "Full")        icn="" ;;
+        *)             icn="" ;;
+    esac
+
+    printf '%s %s %s' "$clr" "$icn" "$per%"
+}
+
+cpu() {
+    cpu=$(mpstat 1 1 | sed '$!d' | awk '{print $3}')
+
+    case "$(printf '%.f' "$cpu")" in
+        [0-9]|1[0-9])         clr="$(colors 7)" ;;
+        2[0-9]|3[0-9]|4[0-9]) clr="$(colors 2)" ;;
+        5[0-9]|6[0-9])        clr="$(colors 4)" ;;
+        7[0-9]|8[0-9])        clr="$(colors 3)" ;;
+        *)                    clr="$(colors 1)" ;;
+    esac
+
+    printf '%s %s %s' "$clr" "" "$cpu%"
+}
+
+datee() {
+    printf '%s %s %s' "$(colors 7)" "" "$(date '+%Y-%m-%d')"
+}
+
+disk() {
+    clr=$(colors 7)
+    dsk=$(df -h -P "$HOME" | sed '$!d' | awk '{print $4}')
+    printf '%s %s %s' "$clr" "" "$dsk"
+}
+
+mediaplayer() {
+    ply="${BLOCK_INSTANCE:-spotifyd}"
+    arg="--player=$ply"
+    msg="$(playerctl "$arg" metadata --format '{{ artist }} - {{ title }}')"
+
+    case "$BLOCK_BUTTON" in
+        1) playerctl "$arg" previous ;;
+        2) playerctl "$arg" play-pause ;;
+        3) playerctl "$arg" next ;;
+    esac
+
+    [ -z "$msg" ] && return
+    [ -z "$DWM" ] && msg="$(printf '%s' "$msg" | sed -e 's/\&/&amp;/g')"
+
+    printf '%s %s %s' "#2edb59" "" "$msg"
+}
+
+memory() {
+    mem=$(free | sed -ne '/^Mem:\(.*\)/p')
+    ttl=$(printf '%s' "$mem" | awk '{print $2/1024/1024}')
+    fre=$(printf '%s' "$mem" | awk '{print ($4+$6)/1024/1024}')
+    use=$(printf '%s\n' "$ttl - $fre" | bc -l)
+    per=$(printf '%s\n' "$use / $ttl * 100" | bc -l)
+
+    case "$per" in
+        [0-9]|1[0-9])         clr="$(colors 1)" ;;
+        2[0-9]|3[0-9]|4[0-9]) clr="$(colors 3)" ;;
+        5[0-9]|6[0-9])        clr="$(colors 4)" ;;
+        7[0-9]|8[0-9])        clr="$(colors 2)" ;;
+        *)                    clr="$(colors 7)" ;;
+    esac
+
+    printf '%s %s %.f%%' "$clr" "" "$per"
+}
+
+openvpn() {
+    clr=$(colors 1)
+    txt="dis"
+
+    if [ -n "$(pidof openvpn)" ]; then
+        clr=$(colors 2)
+        txt="con"
+    fi
+
+    printf '%s %s %s' "$clr" "" "$txt"
+}
+
+timee() {
+    printf '%s %s %s' "$(colors 6)" "" "$(date '+%H:%M')"
+}
+
+updates() {
+    case "$BLOCK_BUTTON" in
+        1) updates "$@"; return ;;
+    esac
+
+    aur="${1:-true}"
+    sil="${2:-false}"
+    tmp="$(mktemp -d)"
+    sudo pacman -Sy --dbpath "$tmp" --logfile /dev/null > /dev/null
+    upt=$(pacman -Qu 2> /dev/null | grep -cv '\[.*\]')
+    [ "$aur" = "true" ] && \
+        upt=$(( upt + $(yay -Qua | wc -l) ))
+
+    if [ "$upt" -gt 0 ]; then
+        clr=$(colors 2)
+        msg="$upt update(s)"
+    elif [ "$sil" != false ]; then
+        clr=$(colors 3)
+        msg="sys up to date"
+    fi
+
+    [ -n "$clr" ] && [ -n "$msg" ] && printf '%s %s %s' "$clr" "" "$msg"
+}
+
+volume() {
+    mix="default"
+    stp="${1:-5%}"
+    # pactl set-sink-volume @DEFAULT_SINK@ "$arg"
+    # vol="$(pactl get-sink-volume @DEFAULT_SINK@ | sed 1q | awk '{ print $5 }' | sed 's/%//')"
+    # sta="$(pactl get-sink-mute @DEFAULT_SINK@ | awk '{ print $2 }')"
+    ctl="$(amixer -D $mix scontrols \
+        | sed -n "s/Simple mixer control '\([A-Za-z ]*\)',0/\1/p; 1q")"
+    cap="$(amixer -D $mix get "$ctl" \
+        | sed -n 's/ \+Capabilities:.*volume.*/Capture/p')"
+    dat="$(amixer -D $mix get "$ctl" "$cap" | sed '$!d')"
+    vol="$(printf '%s' "$dat" | awk '{print $5}' | sed -e 's/\[\(.*\)\%\]/\1/')"
+    sta="$(printf '%s' "$dat" | awk '{print $6}' | sed -e 's/\[\(.*\)\]/\1/')"
+
+    [ "$sta" = "off" ] && vol=0
+    case "$BLOCK_BUTTON" in
+        3) notify-send "$mix $ctl" ; amixer -q -D $mix sset "$ctl" toggle ;;
+        4) amixer -q -D $mix sset "$ctl" "${stp}+" unmute ;;
+        5) amixer -q -D $mix sset "$ctl" "${stp}-" unmute ;;
+    esac
+    case "$vol" in
+        0)                    icn="" ;;
+        [0-9]|1[0-9])         icn="" ;;
+        2[0-9]|3[0-9])        icn="" ;;
+        4[0-9]|5[0-9])        icn="" ;;
+        6[0-9]|7[0-9]|8[0-9]) icn="" ;;
+        *)                    icn="" ;;
+    esac
+
+    clr=$(colors 7)
+    printf '%s %s %s' "$clr" "$icn" "$vol%"
+}
+
+wifi() {
+    int="${BLOCK_INSTANCE:-wlan0}"
+    [ ! -d "/sys/class/net/${int}/wireless" ] ||
+        [ "$(cat /sys/class/net/"$int"/operstate)" = 'down' ] && return 1
+    qlt="$(grep "$int" /proc/net/wireless | awk '{print int($3 * 100 / 70)}')"
+
+    case "$qlt" in
+        [0-9]|1[0-9])         clr=$(colors 1); icn="" ;;
+        2[0-9]|3[0-9])        clr=$(colors 3); icn="" ;;
+        4[0-9]|5[0-9])        clr=$(colors 4); icn="" ;;
+        6[0-9]|7[0-9]|8[0-9]) clr=$(colors 2); icn="" ;;
+        *)                    clr=$(colors 7); icn="" ;;
+    esac
+
+    printf '%s %s %s%%' "$clr" "$icn" "$qlt"
+}

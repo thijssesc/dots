@@ -1,0 +1,24 @@
+#!/usr/bin/env sh
+#
+# Script to format the output of `~/.local/scripts/bar` for sway/i3 bar.
+#
+
+# shellcheck source=/dev/null
+. ~/.local/scripts/bar
+
+format() {
+    if [ -z "$*" ]; then return; fi
+
+    if [ -z "$3" ]; then
+        printf '<span color="%s"><span font="FontAwesome">%s</span></span>\n' "$1" "$2"
+    elif [ -n "$4" ]; then
+        third="$(echo "$@" | cut -d' ' -f3-)"
+        printf '<span color="%s"><span font="FontAwesome">%s </span>%s</span>\n' "$1" "$2" "$third"
+    else
+        printf '<span color="%s"><span font="FontAwesome">%s </span>%s</span>\n' "$1" "$2" "$3"
+    fi
+}
+
+res="$("$@")"
+# shellcheck disable=SC2086
+format $res

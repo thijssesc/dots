@@ -1,0 +1,8 @@
+font=RobotoMono
+format=<b>%s</b>\n%b
+background-color=#22a7f0
+border-color=#22a7f0
+text-color=#ecf0f1
+default-timeout=3500
+anchor=top-right
+margin=12,12

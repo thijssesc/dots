@@ -1,0 +1,25 @@
+#!/usr/bin/env sh
+#
+# Script to generate bash and ranger bookmarks.
+#
+
+# Bookmark file locations
+bmd="$XDG_CONFIG_HOME/bookmarks/bmdirs"
+bmf="$XDG_CONFIG_HOME/bookmarks/bmfiles"
+
+# Output locations.
+shs="$XDG_CONFIG_HOME/bash/shortcuts"
+rgs="$XDG_CONFIG_HOME/ranger/shortcuts.conf"
+
+# Remove, prepare files
+rm -f "$rgs" 2>/dev/null
+printf '#!/usr/bin/env sh\n\n# shellcheck disable=SC2139\n%s' "alias " > "$shs"
+
+# Format the `bmdirs` file in the correct syntax and sent it to all three configs.
+dir=$(sed "s/#.*$//;/^$/d" "$bmd")
+printf '%s' "$dir" | awk '{print $1"=\"cd "$2" && ls -l\" \\"}' >> "$shs"
+printf '%s' "$dir" | awk '{print "map g"$1" cd "$2"\nmap t"$1" tab_new "$2"\nmap m"$1" shell mv -v %s "$2"\nmap Y"$1" shell cp -rv %s "$2}' >> "$rgs"
+
+# Format the `configs` file in the correct syntax and sent it to both configs.
+sed "s/#.*$//;/^$/d" "$bmf" | awk '{print $1"=\"$EDITOR "$2"\" \\"}' >> "$shs"
+sed -i '$s/\\//' "$shs"

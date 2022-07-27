@@ -1,0 +1,54 @@
+#!/usr/bin/env sh
+#
+# Script to lock the screen for i3/sway.
+#
+
+# shellcheck source=/dev/null
+. ~/.local/scripts/clr
+
+if [ -n "$WAYLAND_DISPLAY" ]; then
+    swaylock-blur \
+        --blur-sigma 0 -- \
+        --ignore-empty-password \
+        --ring-ver-color="$(colors 7)f0" \
+        --ring-wrong-color="$(colors 7)f0" \
+        --ring-color="$(colors 7)f0" \
+        --key-hl-color=141516f0 \
+        --bs-hl-color=141516f0 \
+        --separator-color=00000000 \
+        --inside-ver-color=ffffff00 \
+        --inside-wrong-color=ffffff00 \
+        --text-ver-color=ffffff00 \
+        --text-wrong-color=ffffff00 \
+        --line-uses-inside
+else 
+    if [ "$WM" = "dwm" ]; then
+        slock
+    else
+        i3lock-fancy-rapid 5 1 \
+            --radius=20 \
+            --ring-width=3 \
+            --clock \
+            --timepos="x+120:h-120" \
+            --timestr="%H:%M" \
+            --datepos="tx+12:ty+25" \
+            --datestr "pass to unlock..." \
+            --indpos="x+235:h-120" \
+            --ignore-empty-password \
+            --ringvercolor="$(colors 7)f0" \
+            --ringwrongcolor="$(colors 7)f0" \
+            --ringcolor="$(colors 7)f0" \
+            --keyhlcolor=141516f0 \
+            --bshlcolor=141516f0 \
+            --separatorcolor=00000000 \
+            --insidevercolor=ffffff00 \
+            --insidewrongcolor=ffffff00 \
+            --insidecolor=ffffff00 \
+            --verifcolor=ffffff00 \
+            --wrongcolor=ffffff00 \
+            --timecolor="$(colors 7)f0" \
+            --datecolor="$(colors 7)f0" \
+            --layoutcolor=ffffff00 \
+            --line-uses-inside
+    fi
+fi

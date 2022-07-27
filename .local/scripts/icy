@@ -1,0 +1,20 @@
+#!/usr/bin/env sh
+#
+# Script to display sys info
+#
+
+# shellcheck source=/dev/null
+bld=$(printf '%b' '\033[1m')
+rst=$(printf '%b' '\033[0m')
+f4=$(printf '%b' '\033[34m')
+f7=$(printf '%b' '\033[37m')
+
+cat <<EOF
+
+         ${f4}${bld}os:${rst}      ${f7}$(. /etc/os-release && printf '%s' "$ID")${rst}
+  ┌───┐  ${f4}${bld}kernel:${rst}  ${f7}$(uname -r | sed 's/-.*//')${rst}
+  │${f4}^${rst}_${f4}^${rst}│  ${f4}${bld}shell:${rst}   ${f7}$(basename "$SHELL")${rst}
+  └───┘  ${f4}${bld}pkg:${rst}     ${f7}$(pacman -Qq | wc -l)${rst}
+         ${f4}${bld}wm:${rst}      ${f7}$(printf '%s' "$WM")${rst}
+
+EOF

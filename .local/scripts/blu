@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+
+devices=$(bluetoothctl -- devices)
+names=$(printf '%s' "$devices"  | cut -d ' ' -f 2-)
+
+chs=$(printf '%s\n' "$names" | dmenu -i -l 10 "$@")
+[ -n "$chs" ] || exit
+mac=$(printf '%s\n' "$devices" | grep -i "$chs" | cut -d ' ' -f 2)
+
+bluetoothctl -- trust "$mac" > /dev/null
+bluetoothctl -- pair "$mac" > /dev/null
+bluetoothctl -- connect "$mac" > /dev/null

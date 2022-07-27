@@ -1,0 +1,26 @@
+#!/usr/bin/env sh
+#
+# Script to run dmenu with aliases.
+#
+
+# shellcheck source=/dev/null
+cch="$XDG_CACHE_HOME/dmenu_run3"
+frq="$XDG_CACHE_HOME/dmenu_history"
+
+. "$XDG_CONFIG_HOME/bash/aliases"
+
+als="$(alias | cut -f1 -d "=" | tr -d "\'")"
+(printf '%s\n' "$als"; dmenu_path | tail -n +2) > "$cch"
+
+[ -z "$frq" ] && touch "$frq"
+srt="$(sort "$frq" | uniq -c | sort -hr | colrm 1 8)"
+cmd="$( (printf '%s\n' "$srt"; grep -vxF "$srt" "$cch") | dmenu "$@")"
+
+if [ "$cmd" != "" ] && [ "$(grep "$cmd" "$cch")" != "" ]; then
+    printf '%s\n' "$cmd" >> "$frq"
+    cxc="$(alias | grep "$cmd=" | cut -f2 -d "'" | tr -d "'")"
+    [ -z "$cxc" ] && cxc="$cmd"
+
+    printf '%s\n' "$cxc" | sh
+fi
+

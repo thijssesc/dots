@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openbox_menu xmlns="http://openbox.org/3.4/menu">
+	<menu id="apps-access-menu" label="access">
+		<item label="calc">
+			<action name="Execute">
+				<execute>galculator</execute>
+			</action>
+		</item>
+		<item label="evince">
+			<action name="Execute">
+				<execute>evince</execute>
+			</action>
+		</item>
+		<item label="thunar">
+			<action name="Execute">
+				<execute>thunar ~/</execute>
+			</action>
+		</item>
+	</menu>
+	<menu id="apps-dev-menu" label="dev">
+		<item label="atom">
+			<action name="Execute">
+				<execute>atom</execute>
+			</action>
+		</item>
+		<item label="postman">
+			<action name="Execute">
+				<execute>postman</execute>
+			</action>
+		</item>
+		<item label="intellij">
+			<action name="Execute">
+				<execute>intellij-ultimate-edition</execute>
+			</action>
+		</item>
+	</menu>
+	<menu id="apps-graph-menu" label="graph">
+		<item label="krita">
+			<action name="Execute">
+				<execute>krita</execute>
+			</action>
+		</item>
+		<item label="viewnior">
+			<action name="Execute">
+				<execute>viewnior</execute>
+			</action>
+		</item>
+	</menu>
+	<menu id="apps-office-menu" label="office">
+		<item label="calc">
+			<action name="Execute">
+				<execute>/usr/lib/libreoffice/program/scalc</execute>
+			</action>
+		</item>
+		<item label="pres">
+			<action name="Execute">
+				<execute>/usr/lib/libreoffice/program/simpress</execute>
+			</action>
+		</item>
+		<item label="write">
+			<action name="Execute">
+				<execute>/usr/lib/libreoffice/program/swriter</execute>
+			</action>
+		</item>
+		<separator/>
+		<item label="evince">
+			<action name="Execute">
+				<execute>evince</execute>
+			</action>
+		</item>
+	</menu>
+	<menu id="apps-media-menu" label="media">
+		<item label="spotify">
+			<action name="Execute">
+				<execute>spotify</execute>
+			</action>
+		</item>
+	</menu>
+	<menu id="apps-terms-menu" label="terms">
+		<item label="htop">
+			<action name="Execute">
+				<execute>st -e htop</execute>
+			</action>
+		</item>
+		<item label="nnn">
+			<action name="Execute">
+				<execute>st -e nnn</execute>
+			</action>
+		</item>
+		<item label="ranger">
+			<action name="Execute">
+				<execute>st -e ranger</execute>
+			</action>
+		</item>
+		<item label="vim">
+			<action name="Execute">
+				<execute>st -e vim</execute>
+			</action>
+		</item>
+	</menu>
+	<menu id="apps-web-menu" label="web">
+		<item label="chromium">
+			<action name="Execute">
+				<execute>chromium</execute>
+			</action>
+		</item>
+		<item label="firefox">
+			<action name="Execute">
+				<execute>firefox</execute>
+			</action>
+		</item>
+		<item label="slack">
+			<action name="Execute">
+				<execute>slack</execute>
+			</action>
+		</item>
+	</menu>
+	<menu id="folder-menu" label="folders">
+		<item label="home">
+			<action name="Execute">
+				<execute>thunar ~/</execute>
+			</action>
+		</item>
+		<separator/>
+		<item label="documents">
+			<action name="Execute">
+				<execute>thunar ~/Documents</execute>
+			</action>
+		</item>
+		<item label="downloads">
+			<action name="Execute">
+				<execute>thunar ~/Downloads</execute>
+			</action>
+		</item>
+		<item label="projects">
+			<action name="Execute">
+				<execute>thunar ~/IdeaProjects</execute>
+			</action>
+		</item>
+		<item label="pictures">
+			<action name="Execute">
+				<execute>thunar ~/Pictures</execute>
+			</action>
+		</item>
+		<item label="software">
+			<action name="Execute">
+				<execute>thunar ~/Software</execute>
+			</action>
+		</item>
+		<separator/>
+		<item label="root">
+			<action name="Execute">
+				<execute>thunar /</execute>
+			</action>
+		</item>
+	</menu>
+	<menu id="system-menu" label="system">
+		<item label="edit autostart">
+			<action name="Execute">
+				<execute>atom ~/.config/openbox/autostart</execute>
+			</action>
+		</item>
+		<item label="edit menu.xml">
+			<action name="Execute">
+				<execute>atom ~/.config/openbox/menu.xml</execute>
+			</action>
+		</item>
+		<item label="edit rc.xml">
+			<action name="Execute">
+				<execute>atom ~/.config/openbox/rc.xml</execute>
+			</action>
+		</item>
+		<separator/>
+		<item label="vim autostart">
+			<action name="Execute">
+				<execute>urxvt -e vim ~/.config/openbox/autostart</execute>
+			</action>
+		</item>
+		<item label="vim menu.xml">
+			<action name="Execute">
+				<execute>urxvt -e vim ~/.config/openbox/menu.xml</execute>
+			</action>
+		</item>
+		<item label="vim rc.xml">
+			<action name="Execute">
+				<execute>urxvt -e vim ~/.config/openbox/rc.xml</execute>
+			</action>
+		</item>
+		<separator/>
+		<item label="obconf">
+			<action name="Execute">
+				<execute>obconf</execute>
+			</action>
+		</item>
+		<item label="obmenu">
+			<action name="Execute">
+				<execute>obmenu</execute>
+			</action>
+		</item>
+		<item label="lxapp">
+			<action name="Execute">
+				<execute>lxappearance</execute>
+			</action>
+		</item>
+		<separator/>
+		<item label="reconf">
+			<action name="Reconfigure"/>
+		</item>
+	</menu>
+	<menu id="root-menu" label="ob">
+		<item label="firefox">
+			<action name="Execute">
+				<execute>firefox</execute>
+			</action>
+		</item>
+		<item label="st">
+			<action name="Execute">
+				<execute>st</execute>
+			</action>
+		</item>
+		<item label="thunar">
+			<action name="Execute">
+				<execute>thunar ~/</execute>
+			</action>
+		</item>
+		<separator/>
+		<menu id="apps-access-menu"/>
+		<menu id="apps-dev-menu"/>
+		<menu id="apps-graph-menu"/>
+		<menu id="apps-office-menu"/>
+		<menu id="apps-media-menu"/>
+		<menu id="apps-terms-menu"/>
+		<menu id="apps-web-menu"/>
+		<separator/>
+		<menu id="folder-menu"/>
+		<separator/>
+		<menu id="system-menu"/>
+		<separator/>
+		<item label="poweroff">
+			<action name="Execute">
+				<execute>poweroff</execute>
+			</action>
+		</item>
+		<item label="reboot">
+			<action name="Execute">
+				<execute>reboot</execute>
+			</action>
+		</item>
+		<item label="log out">
+			<action name="Exit"/>
+		</item>
+	</menu>
+</openbox_menu>

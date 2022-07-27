@@ -1,0 +1,19 @@
+#!/usr/bin/env sh
+#
+# Script to have a dropdown st terminal for openbox.
+#
+
+wid="$(xdotool search --classname stq)"
+if [ -z "$wid" ]; then
+    st -n stq -e tmux -2
+    wid="$(xdotool search --classname stq | head -1)"
+    xdotool windowfocus "$wid"
+else
+    xdo="$(xdotool search --onlyvisible --classname stq 2>/dev/null)"
+    if [ -z "$xdo" ]; then
+        xdotool windowmap   "$wid"
+        xdotool windowfocus "$wid"
+    else
+        xdotool windowunmap "$wid"
+    fi
+fi

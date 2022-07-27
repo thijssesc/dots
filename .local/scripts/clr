@@ -1,0 +1,28 @@
+#!/usr/bin/env sh
+#
+# Script to get colors from the `$XDG_CONFIG_HOME/Xresources` file.
+#
+
+__ground() {
+    # Print a color from the $XDG_CONFIG_HOME/X11/Xresources file.
+    # Usage: colors "number"
+    clr=$(sed -ne "/\*$1/p" "$XDG_CONFIG_HOME/X11/Xresources" \
+        | sed -n "s/\*$1\: \+//p")
+    printf '%s\n' "$clr"
+}
+
+background() {
+    __ground "background"
+}
+
+foreground() {
+    __ground "foreground"
+}
+
+colors() {
+    # Print a color from the $XDG_CONFIG_HOME/X11/Xresources file.
+    # Usage: colors "number"
+    clr=$(sed -ne '/\*color[0-9]/p' "$XDG_CONFIG_HOME/X11/Xresources" \
+        | sed -n "s/\*color//; s/\: \+//; s/^$1\(\#.*\)/\1/p;")
+    printf '%s\n' "$clr"
+}

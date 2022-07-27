@@ -1,0 +1,29 @@
+#!/usr/bin/env sh
+#
+# Startx init script.
+#
+
+export WM="${1:-dwm}"
+
+[ -f "$XDG_CONFIG_HOME/X11/Xresources" ] && \
+    xrdb -merge "$XDG_CONFIG_HOME/X11/Xresources"
+
+scr="$(xrandr | grep -c ' connected')"
+if [ "$TOP_TYPE" == "laptop" ] && [ "$scr" -ne 3 ]; then
+    # Remaps control to caps
+    setxkbmap -option ctrl:nocaps
+    # Remaps backslash/bar to backspace
+    xmodmap -e "keycode 22 = backslash bar"
+    # Remaps backspace to backslash/bar
+    xmodmap -e "keycode 51 = BackSpace"
+fi
+
+case "$WM" in
+    awesome)  . "$HOME/.local/scripts/edw" && exec awesome ;;
+    dwm)      . "$HOME/.local/scripts/edw" & exec dwm ;;
+    i3)       exec dbus-launch i3 ;;
+    openbox)  exec dbus-launch openbox ;;
+    sowm)     . "$HOME/.local/scripts/ecm" & exec sowm ;;
+    spectrwm) exec dbus-launch spectrwm ;;
+    *)        exec dbus-launch "$1" ;;
+esac

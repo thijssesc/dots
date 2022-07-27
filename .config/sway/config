@@ -1,0 +1,50 @@
+# include base
+include ./config.base
+
+## laptop specific
+# monitors
+set $left_monitor   "eDP-1"
+set $middle_monitor "DP-2"
+set $right_monitor  "HDMI-A-1"
+
+# output
+output $left_monitor   pos 0    0 res 1920x1080
+output $middle_monitor pos 1920 0 res 1920x1080
+output $right_monitor  pos 3840 0 res 1920x1080
+
+# monitor output
+workspace $ws1  output $middle_monitor primary 
+workspace $ws2  output $left_monitor   primary 
+workspace $ws3  output $right_monitor  primary 
+workspace $ws4  output $right_monitor  primary 
+workspace $ws5  output $middle_monitor primary 
+workspace $ws6  output $left_monitor   primary 
+workspace $ws7  output $left_monitor   primary 
+workspace $ws8  output $left_monitor   primary
+workspace $ws9  output $middle_monitor primary
+workspace $ws10 output $right_monitor  primary
+
+# wallpaper
+output * bg ~/Pictures/walls/background.jpg stretch
+
+# set gtk theme
+set $gnome-schema org.gnome.desktop.interface
+
+exec_always {
+    gsettings set $gnome-schema gtk-theme  "NinixDarker"
+    gsettings set $gnome-schema icon-theme "Numix"
+}
+
+# input
+set $touchpad "1739:31251:DLL07BF:01_06CB:7A13_Touchpad"
+
+# input settings
+input $touchpad {
+    left_handed      disabled
+    tap              enabled
+    natural_scroll   disabled
+    middle_emulation disabled 
+    dwt              enabled
+    events           enabled
+    tap_button_map   lmr
+}

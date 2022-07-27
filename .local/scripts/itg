@@ -1,0 +1,30 @@
+#!/usr/bin/env sh
+#
+# Script to toggle the idle manager on/off for i3/sway.
+#
+
+[ -n "$WAYLAND_DISPLAY" ] \
+    && pid=$(pidof swayidle) \
+    || pid=$(pidof xautolock)
+
+if [ -n "$pid" ]; then
+    st1="on" 
+    st2="off"
+else 
+    st1="off"
+    st2="on"
+fi
+
+if [ "$sel" != "on" ] && [ "$sel" != "off" ]; then
+    sel="$(printf '%s\n%s' "$st2" "$st1" \
+        | dmenu -i -p "idle is $st1, turn it $st2?")"
+    [ -z "$sel" ] && exit 0
+fi
+
+if [ -n "$pid" ] && [ "$sel" = "off" ]; then
+    killall swayidle
+    killall xautolock && xset -dpms
+elif [ -z "$pid" ] && [ "$sel" = "on" ]; then
+    # shellcheck source=/dev/null
+    . ~/.local/scripts/idl
+fi

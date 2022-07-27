@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+#
+# Script to setup the multi monitor configuration.
+#
+
+if [ "$TOP_TYPE" = "laptop" ]; then
+    xrandr --output DP2 --off \
+        --output VIRTUAL1 --off \
+        --output eDP1 --mode 1920x1200 --pos 3025x1080 --rotate normal \
+        --output DP2 --mode 1920x1080 --pos 0x0 --rotate normal \
+        --output DP3 --primary --mode 1920x1080 --pos 1920x0 --rotate normal
+else
+    xrandr --output DisplayPort-2 --off \
+        --output HDMI-A-0 --off \
+        --output DisplayPort-0 --mode 1920x1080 --pos 0x0 --rotate normal \
+        --output DisplayPort-1 --mode 1920x1080 --pos 1920x0 --rotate normal
+fi

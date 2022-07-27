@@ -1,0 +1,19 @@
+#!/usr/bin/env sh
+#
+# $XDG_CONFIG_HOME/bash/aliases
+#
+
+# Terminal application aliases
+alias htop-term='st -n htopterm -e hiop --user $USER'
+alias nnn-term='st -n nnnterm -e nnn -CHde'
+alias rtorrent-term='st -n rtorrenterm -e rtorrent'
+alias spt-term='st -n sptterm -e spt'
+alias vim-term='st -n vimterm -e nvim'
+
+# VPN
+alias oc='bkr $HOME/.local/scripts/opc || $HOME/.local/scripts/opc'
+alias poc='sudo pkill openvpn 2>/dev/null'
+
+# Other
+alias tabbed-surf='tabbed -d -r 2 surf -e "surf" 2>/dev/null'
+alias nvidia-settings='nvidia-settings --config="$XDG_CONFIG_HOME/nvidia/settings"'

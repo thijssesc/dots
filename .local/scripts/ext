@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+#
+# Script to force exit the WM.
+#
+
+sel="$(printf '%s\n%s' "yes" "no" \
+    | dmenu -i -p "exit $WM?")"
+[ -z "$sel" ] && exit 0
+[ "$sel" = "yes" ] && pkill xinit

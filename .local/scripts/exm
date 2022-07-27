@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+#
+# Script to exit i3/sway.
+#
+
+if [ "$sel" != "no" ] && [ "$sel" != "yes" ]; then
+    sel="$(printf '%s\n%s' "no" "yes" \
+        | dmenu -i -p "Are you sure you want to logout?")"
+    [ -z "$sel" ] && exit 0
+fi
+    
+[ "$sel" = "no" ] && exit 0
+[ -n "$WAYLAND_DISPLAY" ] && msg="swaymsg" || msg="i3-msg"
+$msg exit

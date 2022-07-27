@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+#
+# Script to setup the idle manager for i3/sway.
+#
+
+# shellcheck disable=SC2016
+if [ -n "$WAYLAND_DISPLAY" ]; then
+    swayidle \
+        timeout 300  '$(/bin/sh ~/.local/scripts/lck)' \
+        timeout 600  'swaymsg "output * dpms off"' \
+             resume  'swaymsg "output * dpms on"' \
+        before-sleep '$(/bin/sh ~/.local/scripts/lck)'
+else
+    xautolock -time 5 -locker '$(/bin/sh ~/.local/scripts/lck)'
+fi

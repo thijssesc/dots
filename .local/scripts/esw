@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+#
+# Script to execute programs for sowm.
+#
+
+(scs && feh --no-fehbg --bg-fill ~/Pictures/walls/bck.*) &
+sxhkd &
+# idl &
+dunst &
+unclutter --jitter 10 --timeout 1 &
+

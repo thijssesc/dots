@@ -1,0 +1,24 @@
+#!/usr/bin/env sh
+
+trim_string() {
+    # Usage: trim_string "   example   string    "
+
+    # Remove all leading white-space.
+    # '${1%%[![:space:]]*}': Strip everything but leading white-space.
+    # '${1#${XXX}}': Remove the white-space from the start of the string.
+    trim="${1#"${1%%[![:space:]]*}"}"
+
+    # Remove all trailing white-space.
+    # '${trim##*[![:space:]]}': Strip everything but trailing white-space.
+    # '${trim%${XXX}}': Remove the white-space from the end of the string.
+    trim="${trim%"${trim##*[![:space:]]}"}"
+
+    printf '%s\n' "$trim"
+}
+
+opt="$(archlinux-java status | tail -n +2 | sed 's/\s(default)//g' | tr -d ' ')"
+cur="$(archlinux-java get)"
+sel="$(printf '%s' "$opt" | dmenu -i -p "choose java version (current: $cur)")"
+
+[ -z "$sel" ] && exit 0
+sudo archlinux-java set "$sel"

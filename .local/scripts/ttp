@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+#
+# Script to toggle the system tray on and off for openbox.
+#
+
+trc="$XDG_CONFIG_HOME/tint2/tint2rc"
+on="panel_items = TSC"
+off="panel_items = TC"
+
+[ "$(grep -c "$off" "$trc")" -eq 1 ] && sed -i "s/$on/$off/g" "$trc"
+tint2 "$trc"

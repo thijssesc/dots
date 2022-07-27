@@ -1,0 +1,96 @@
+#!/usr/bin/env sh
+#
+# Script to change the volume levels.
+#
+
+# shellcheck source=/dev/null
+. ~/.local/scripts/clr
+
+brw=165
+hgh=30
+wth=250
+if [ -n "$WAYLAND_DISPLAY" ]; then
+    scw="$(swaymsg -t get_outputs -r \
+        | jq -r '.[] | .current_mode | .width' \
+        | awk '{ s+=$1 } END { print s }')"
+    sch="$(swaymsg -t get_outputs -r \
+        | jq -r '.[] | .current_mode | .height' | sed 1q)"
+else
+    if [ "$TOP_TYPE" = "desktop" ]; then
+        scw=5760
+    else
+        scw="$(xrandr | grep '\*' | awk '{print $1}' \
+            | cut -d 'x' -f1 | awk '{s+=$1} END {print s}')"
+    fi
+    sch="$(xrandr | grep '\*' | awk '{print $1}' \
+        | cut -d 'x' -f2 | sed 1q)"
+fi
+
+xps="$(printf '%s\n' "$scw / 2 - $wth / 2" | bc)"
+yps="$(printf '%s\n' "$sch / 2 - $hgh / 2" | bc)"
+
+err() {
+    printf '%s\n' "$1"
+    exit 1
+}
+
+usg() {
+    printf '%s\n'   "usage: dvl [option] [argument]"
+    printf '\n'
+    printf '%s\n'   "options:"
+    printf '\t%s\n' "-i, --increase - increase volume by \`argument'"
+    printf '\t%s\n' "-d, --decrease - decrease volume by \`argument'"
+    printf '\t%s\n' "-t, --toggle   - toggle mute on and off"
+    printf '\t%s\n' "-g, --get      - show the current volume"
+    printf '\t%s\n' "-h, --help     - display this"
+    exit
+}
+
+case "$1" in
+    "-i"|"--increase")
+        [ -z "$2" ] && err "No argument specified for increase."
+        [ -n "$(printf '%s' "$2" | tr -d "\[0-9\]")" ] && \
+            err "The argument needs to be an integer."
+
+        arg="${2}%+"
+        ;;
+    "-d"|"--decrease")
+        [ -z "$2" ] && err "No argument specified for decrease."
+        [ -n "$(printf '%s' "$2" | tr -d "\[0-9\]")" ] && \
+            err "The argument needs to be an integer."
+
+        arg="${2}%-"
+        ;;
+    "-t"|"--toggle")  arg="toggle" ;;
+    ""|"-h"|"--help") usg ;;
+    *)                err "Unrecognized option '$1', see dvol --help" ;;
+esac
+
+# old="$(pactl get-sink-volume @DEFAULT_SINK@ | sed 1q | awk '{ print $5 }' | sed 's/%//')"
+# if [ "$arg" = "toggle" ]; then
+#     pactl set-sink-mute @DEFAULT_SINK@ "$arg"
+# elif [ "$arg" = "-${2}%" ] || [ "$old" -lt "100" ]; then
+#     pactl set-sink-volume @DEFAULT_SINK@ "$arg"
+# fi
+
+# vol="$(pactl get-sink-volume @DEFAULT_SINK@ | sed 1q | awk '{ print $5 }' | sed 's/%//')"
+# sta="$(pactl get-sink-mute @DEFAULT_SINK@ | awk '{ print $2 }')"
+out="$(amixer -D default sset Master "$arg")"
+vol="$(printf '%s' "$out" | awk '{print $5}' | sed -e 's/\[\(.*\)\%\]/\1/')"
+sta="$(printf '%s' "$out" | awk '{print $6}' | sed -e 's/\[\(.*\)\]/\1/')"
+[ "$sta" = "off" ] && vol=0
+
+bg="$(background)"
+fg="$(foreground)"
+brf="$(foreground)"
+brb="#444444"
+
+pip="/tmp/dvol"
+if [ ! -e "$pip" ]; then
+    mkfifo "$pip"
+    (dzen2 -tw "$wth" -h "$hgh" -x "$xps" -y "$yps" -bg "$bg" -fg "$fg" < "$pip"
+    rm -f "$pip") &
+fi
+
+(printf '%s\n' "$vol" | gdbar -fg "$brf" -bg "$brb" -w "$brw" \
+    ; sleep 1) > "$pip"

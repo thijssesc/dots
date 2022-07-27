@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+#
+# $XDG_CONFIG_HOME/bash/functions
+#
+
+# shellcheck source=/dev/null
+
+__function_exists() {
+    declare -f -F "$1" > /dev/null
+    return $?
+}
+
+__git_aliases() { __git_get_config_variables "alias"; }
+
+bkr() { (nohup "$@" >/dev/null 2>&1 &) }
+
+n() {
+    # Block nesting of nnn in subshells
+    if [ -n "$NNNLVL" ] && [ "${NNNLVL:-0}" -ge 1 ]; then
+        echo "nnn is already running"
+        return
+    fi
+
+    # The default behaviour is to cd on quit (nnn checks if NNN_TMPFILE is set)
+    # To cd on quit only on ^G, remove the "export" as in:
+    #     NNN_TMPFILE="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd"
+    # NOTE: NNN_TMPFILE is fixed, should not be modified
+    export NNN_TMPFILE="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd"
+
+    # Unmask ^Q (, ^V etc.) (if required, see `stty -a`) to Quit nnn
+    # stty start undef
+    # stty stop undef
+    # stty lwrap undef
+    # stty lnext undef
+
+    nnn -Hd "$@"
+
+    if [ -f "$NNN_TMPFILE" ]; then
+        . "$NNN_TMPFILE"
+        rm -f "$NNN_TMPFILE" > /dev/null
+    fi
+}
+
+orphans() {
+  if [ -z "$(pacman -Qtd)" ]; then
+    echo "No orphans to remove."
+  else
+    # shellcheck disable=SC2046
+    sudo pacman -Rns $(pacman -Qtdq)
+  fi
+}
+
+cdl() { cd "$@" || return; ls --color=auto -l; }
+
+mkcd() { mkdir -p "$1"; cd "$1" || return; }

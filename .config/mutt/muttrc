@@ -1,0 +1,17 @@
+set editor        = $EDITOR
+set my_name       = 'Sjoerd Thijsse'
+set my_pass       = 'foo123'
+set realname      = 'Sjoerd Thijsse'
+set from          = 's.c.thijsse@issc.leidenuniv.nl'
+set use_from      = yes
+set smtp_url      = 'smtps://thijssesc@campus.leidenuniv.nl'
+set ssl_force_tls = yes
+set ssl_starttls  = yes
+set record        = +Sent
+
+set imap_user     = 's.c.thijsse@issc.leidenuniv.nl'
+set folder        = imaps://thijssesc@imaps.campus.leidenuniv.nl
+set spoolfile     = +INBOX
+
+mailboxes         = +INBOX
+

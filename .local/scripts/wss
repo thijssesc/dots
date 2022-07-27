@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+#
+# Script to setup the multi monitor work configuration.
+#
+
+xrandr --output eDP1 --primary --mode 1920x1200 --pos 0x0 \
+  --output DP3 --mode 1920x1200 --pos 1920x0 \
+

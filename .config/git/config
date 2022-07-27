@@ -1,0 +1,56 @@
+[user]
+  email = sjoerdthijsse@gmail.com
+  name = Sjoerd Thijsse
+[core]
+  editor = nvim
+[difftool]
+  prompt = true
+[diff]
+  tool = nvimdiff
+[mergetool "nvimdiff"]
+  cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
+[credential]
+  helper = /usr/lib/git-core/git-credential-libsecret
+[alias]
+  git  = !git
+  l    = log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short
+  ll   = log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short --numstat
+  lol  = log --pretty=oneline --abbrev-commit --graph --decorate
+  a    = add
+  ap   = add -p
+  b    = branch
+  c    = commit --verbose
+  ca   = commit -a --verbose
+  cm   = commit -m
+  cam  = commit -a -m
+  m    = commit --amend --verbose
+  diff = diff --word-diff
+  d    = diff
+  ds   = diff --stat
+  dc   = diff --cached
+  co   = checkout
+  cob  = checkout -b
+  s    = status -s
+  sl   = status --long
+  r    = reset
+  r1   = reset HEAD^
+  r2   = reset HEAD^^
+  rh   = reset --hard
+  rh1  = reset HEAD^ --hard
+  rh2  = reset HEAD^^ --hard
+  stl  = stash list
+  sta  = stash apply
+  sts  = stash save
+  find = !git ls-files | grep -i
+  gr   = grep -Ii
+  f    = fetch
+  p    = pull
+  ps   = push
+  cl   = clone
+  br   = branch
+  loc  = !git ls-files | xargs wc -l
+  lsa  = !git config -l | grep alias | cut -c 7-
+[pull]
+	rebase = false
+[init]
+	defaultBranch = master

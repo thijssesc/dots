@@ -1,0 +1,16 @@
+#!/usr/bin/env sh
+#
+# Script to check for shell errors or bashisms in scripts, used as a pre-commit
+# hook for the dotfiles repository.
+#
+
+shellcheck \
+    ~/.local/scripts/* \
+    ~/.config/nnn/plugins/* \
+    ~/.config/bash/* \
+    ~/.profile && \
+checkbashisms \
+    ~/.local/scripts/* \
+    ~/.config/nnn/plugins/* \
+    ~/.config/bash/* \
+    ~/.profile

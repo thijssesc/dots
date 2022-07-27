@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+#
+# Script to start surf in tabbed mode.
+#
+
+xidfile="/tmp/tabbed-surf.xid"
+
+if [ ! -r "$xidfile" ]; then
+    tabbed -dn tabbed-surf -r 2 surf -e '' >"$xidfile" 2>/dev/null &
+else
+    xid=$(cat "$xidfile")
+    if ! xprop -id "$xid" >/dev/null 2>&1; then
+        tabbed -dn tabbed-surf -r 2 surf -e '' >"$xidfile" 2>/dev/null &
+    else
+        surf -e "$xid" >/dev/null 2>&1 &
+    fi
+fi

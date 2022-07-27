@@ -1,0 +1,15 @@
+(sleep 0s & bash ~/.local/scripts/scs) &
+(sleep 0s & bash ~/.local/scripts/tts) &
+(sleep 0s & libinput-gestures-setup start) &
+(sleep 0s & feh --no-fehbg --bg-scale ~/Pictures/walls/background.jpg) &
+
+(sleep 1s & nm-applet) &
+(sleep 1s & pnmixer) &
+(sleep 1s & cbatticon) &
+
+(sleep 2s & lxpolkit) &
+(sleep 2s & thunar --daemon) &
+(sleep 2s & redshift) &
+ 
+(sleep 3s & slack) &
+(sleep 3s & spotify) &

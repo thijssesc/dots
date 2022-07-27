@@ -1,0 +1,352 @@
+# mod
+set $mod Mod1
+
+# set colors
+set $foreground   #ecf0f1
+set $background   #141516
+set $cursor_color #ecf0f1
+set $darkblack    #3e464e
+set $black        #3e464e
+set $darkred      #db0a5b
+set $red          #db0a5b
+set $darkgreen    #3fc380
+set $green        #3fc380
+set $darkyellow   #f2784b
+set $yellow       #f2784b
+set $darkblue     #22a7f0
+set $blue         #22a7f0
+set $darkmagenta  #f64747
+set $magenta      #f64747
+set $darkcyan     #55aeae
+set $cyan         #55aeae
+set $darkwhite    #ecf0f1
+set $white        #ecf0f1
+
+# vim-bindings
+set $left  h
+set $down  j
+set $up    k
+set $right l
+
+# font
+set $font     "pango:RobotoMono 10"
+set $fontdash RobotoMono-10
+
+# term
+set $term st
+
+# locker
+set $locker ~/.local/scripts/lck
+
+# messager
+set $msg swaymsg
+
+# set font
+font $font
+
+# thin borders
+default_border          pixel 3
+default_floating_border pixel 0
+
+# drag windows
+floating_modifier $mod
+
+# change focus
+bindsym $mod+$left  focus left
+bindsym $mod+$down  focus down
+bindsym $mod+$up    focus up
+bindsym $mod+$right focus right
+
+# move focused window
+bindsym $mod+Shift+$left  move left
+bindsym $mod+Shift+$down  move down
+bindsym $mod+Shift+$up    move up
+bindsym $mod+Shift+$right move right
+
+# split in horizontal orientation
+bindsym $mod+b split h
+
+# split in vertical orientation
+bindsym $mod+v split v
+
+# enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen toggle
+
+# change container layout (stacked, tabbed, toggle split)
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+# toggle tiling / floating
+bindsym $mod+Shift+space floating toggle
+
+# change focus between tiling / floating windows
+bindsym $mod+space focus mode_toggle
+
+# kill focused window
+bindsym $mod+q           kill
+bindsym $mod+bracketleft kill
+
+# define workspaces
+set $ws1   "1: "
+set $ws2   "2: "
+set $ws3   "3: "
+set $ws4   "4: "
+set $ws5   "5: "
+set $ws6   "6: "
+set $ws7   "7: "
+set $ws8   "8: "
+set $ws9   "9: "
+set $ws10 "10: "
+
+# switch to workspace
+bindsym $mod+equal workspace $ws1
+bindsym $mod+minus workspace $ws2
+bindsym $mod+0     workspace $ws3
+bindsym $mod+9     workspace $ws4
+bindsym $mod+8     workspace $ws5
+bindsym $mod+7     workspace $ws6
+bindsym $mod+6     workspace $ws7
+bindsym $mod+5     workspace $ws8
+bindsym $mod+4     workspace $ws9
+bindsym $mod+3     workspace $ws10
+bindsym $mod+Tab   workspace back_and_forth
+
+# move focused container to workspace
+bindsym $mod+Shift+equal move container to workspace $ws1
+bindsym $mod+Shift+minus move container to workspace $ws2
+bindsym $mod+Shift+0     move container to workspace $ws3
+bindsym $mod+Shift+9     move container to workspace $ws4
+bindsym $mod+Shift+8     move container to workspace $ws5
+bindsym $mod+Shift+7     move container to workspace $ws6
+bindsym $mod+Shift+6     move container to workspace $ws7
+bindsym $mod+Shift+5     move container to workspace $ws8
+bindsym $mod+Shift+4     move container to workspace $ws9
+bindsym $mod+Shift+3     move container to workspace $ws10
+
+# monitor workspace management
+bindsym $mod+Shift+bracketleft  move workspace to output left
+bindsym $mod+Shift+bracketright move workspace to output right
+
+# scratchpad
+bindsym $mod+i       scratchpad show
+bindsym $mod+Shift+i move to scratchpad
+
+# mouse
+focus_follows_mouse yes
+mouse_warping none
+
+# back and forth workspaces
+workspace_auto_back_and_forth yes
+
+# gaps inner
+set $default_gaps_inner 5
+gaps inner $default_gaps_inner
+
+# gaps outer
+set $default_gaps_outer 0
+gaps outer $default_gaps_outer
+
+# workspace gaps
+workspace $ws1  gaps inner $default_gaps_inner
+workspace $ws1  gaps outer $default_gaps_outer
+workspace $ws2  gaps inner $default_gaps_inner
+workspace $ws2  gaps outer $default_gaps_outer
+workspace $ws3  gaps inner $default_gaps_inner
+workspace $ws3  gaps outer $default_gaps_outer
+workspace $ws4  gaps inner $default_gaps_inner
+workspace $ws4  gaps outer $default_gaps_outer
+workspace $ws5  gaps inner $default_gaps_inner
+workspace $ws5  gaps outer $default_gaps_outer
+workspace $ws6  gaps inner $default_gaps_inner
+workspace $ws6  gaps outer $default_gaps_outer
+workspace $ws7  gaps inner $default_gaps_inner
+workspace $ws7  gaps outer $default_gaps_outer
+workspace $ws8  gaps inner $default_gaps_inner
+workspace $ws8  gaps outer $default_gaps_outer
+workspace $ws9  gaps inner $default_gaps_inner
+workspace $ws9  gaps outer $default_gaps_outer
+workspace $ws9  gaps outer $default_gaps_outer
+workspace $ws10 gaps inner $default_gaps_inner
+workspace $ws10 gaps outer $default_gaps_outer
+
+# reload the configuration file
+bindsym $mod+Ctrl+c reload
+
+# restart wm inplace
+# diff - restart wm
+
+# resize window
+bindsym Mod4+y resize grow   width  5 px or 1 ppt
+bindsym Mod4+u resize shrink height 5 px or 1 ppt
+bindsym Mod4+i resize grow   height 5 px or 1 ppt
+bindsym Mod4+o resize shrink width  5 px or 1 ppt
+
+# set system mode
+set $mode_system system
+
+# enter system mode
+bindsym $mod+Shift+s mode "$mode_system"
+
+# system management
+mode "$mode_system" {
+    bindsym l       exec --no-startup-id $locker,                          mode "default"
+    bindsym e       exec --no-startup-id ~/.local/scripts/exm,             mode "default"
+    bindsym Shift+s exec --no-startup-id $locker && systemctl suspend,     mode "default"
+    bindsym Shift+h exec --no-startup-id $locker && systemctl hibernate,   mode "default"
+    bindsym Shift+r exec --no-startup-id systemctl reboot,                 mode "default"
+    bindsym Shift+p exec --no-startup-id systemctl poweroff -i,            mode "default"
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+# set gaps mode
+set $mode_gaps       gaps
+set $mode_gaps_inner inner-gaps
+set $mode_gaps_outer outer-gaps
+
+# enter gaps mode
+bindsym $mod+Shift+g mode "$mode_gaps"
+
+# gaps mode
+mode "$mode_gaps" {
+    bindsym i           mode "$mode_gaps_inner"
+    bindsym o           mode "$mode_gaps_outer"
+    bindsym d           mode "default", exec --no-startup-id $msg "gaps inner current set $default_gaps_inner" && $msg "gaps outer current set $default_gaps_outer"
+    bindsym 0           mode "default", exec --no-startup-id $msg "gaps inner current set 0" && $msg "gaps outer current set 0"
+
+    bindsym Return      mode "default"
+    bindsym Escape      mode "default"
+}
+
+# gaps inner mode
+mode "$mode_gaps_inner" {
+    bindsym plus                        gaps inner current plus  5
+    bindsym minus                       gaps inner current minus 5
+    bindsym 0           mode "default", gaps inner current set   0
+    bindsym d           mode "default", gaps inner current set   $default_gaps_inner
+
+    bindsym Shift+plus                  gaps inner all     plus  5
+    bindsym Shift+minus                 gaps inner all     minus 5
+    bindsym Shift+0     mode "default", gaps inner all     set   0
+    bindsym Shift+d     mode "default", gaps inner all     set   $default_gaps_inner
+
+    bindsym i           mode "$mode_gaps_inner"
+    bindsym o           mode "$mode_gaps_outer"
+
+    bindsym Return      mode "default"
+    bindsym Escape      mode "default"
+}
+
+# gaps outer mode
+mode "$mode_gaps_outer" {
+    bindsym plus                        gaps outer current plus  5
+    bindsym minus                       gaps outer current minus 5
+    bindsym 0           mode "default", gaps outer current set   0
+    bindsym d           mode "default", gaps outer current set   $default_gaps_outer
+
+    bindsym Shift+plus                  gaps outer all     plus  5
+    bindsym Shift+minus                 gaps outer all     minus 5
+    bindsym Shift+0     mode "default", gaps outer all     set   0
+    bindsym Shift+d     mode "default", gaps outer all     set   $default_gaps_outer
+
+    bindsym i           mode "$mode_gaps_inner"
+    bindsym o           mode "$mode_gaps_outer"
+
+    bindsym Return      mode "default"
+    bindsym Escape      mode "default"
+}
+
+# window colors
+#                       border      background  text          indicator   child_border
+client.background                   $background
+client.focused          $blue       $blue       $foreground   $blue       $blue
+client.focused_inactive $background $background $cursor_color $background $background
+client.unfocused        $background $background $cursor_color $background $background
+client.urgent           $magenta    $magenta    $foreground   $background $background
+client.placeholder      $background $background $cursor_color $background $background
+
+# bar
+bar {
+    status_command  i3blocks -c ~/.config/sway/i3blocks.conf
+    swaybar_command swaybar
+    position        top
+    tray_output     none
+    font            $font
+
+    colors {
+        background         $background
+        separator          $foreground
+        #                  border       background   text
+        focused_workspace  $blue        $blue        $foreground
+        inactive_workspace $background  $background  $cursor_color
+        urgent_workspace   $magenta     $magenta     $foreground
+    }
+}
+
+# start a terminal
+bindsym $mod+o                exec $term
+bindsym $mod+Shift+o          exec $term -e tmux -2
+
+# toggle 
+bindsym $mod+Shift+y          exec ~/.local/scripts/tgt
+bindsym $mod+Shift+z          exec ~/.local/scripts/itg
+
+# start launcher
+bindsym $mod+p                exec ~/.local/scripts/dma
+
+# startup
+exec        --no-startup-id ~/.local/scripts/idl
+exec_always --no-startup-id mako 
+exec_always --no-startup-id sxhkd
+
+exec --no-startup-id libinput-gestures-setup restart
+exec --no-startup-id lxpolkit
+exec --no-startup-id thunar --daemon
+exec --no-startup-id redshift -m wayland
+exec --no-startup-id firefox-developer-edition
+exec --no-startup-id intellij-idea-ultimate-edition
+exec --no-startup-id $msg "workspace $ws2, exec $term; exec $term, exec $term; workspace $ws1"
+exec --no-startup-id $msg "workspace $ws4, exec $term -n rangerterm -e ranger, exec $term -n nnnterm -e nnn; exec $term -e tmux -2; workspace $ws1"
+exec --no-startup-id slack
+exec --no-startup-id spotify
+exec --no-startup-id chromium
+exec --no-startup-id $msg "workspace $ws9, exec $term -n torrent -e rtorrent, exec $term -n htop -e htop, exec $term -n ranger -e ranger; workspace $ws1"
+exec_always --no-startup-id $term -n sticky -e tmux -2
+
+# default workspaces
+assign     [class="Firefox*"]                                $ws1
+assign     [class="qBittorrent"]                             $ws2
+assign     [class="jetbrains-idea"]                          $ws3
+assign     [instance="sun-awt-X11-XDialogPeer"]              $ws3
+assign     [class="Thunar"]                                  $ws4
+assign     [instance="rangerterm"]                           $ws4
+assign     [instance="nnnterm"]                              $ws4
+assign     [class="Atom"]                                    $ws5
+assign     [class="Postman"]                                 $ws5
+assign     [class="Slack"]                                   $ws6
+for_window [class="(?i)spotify"] move container to workspace $ws7
+assign     [class="Chrom*"]                                  $ws8
+
+# floating dialogs
+for_window [window_type="dialog"]      border pixel 0, floating enable
+for_window [window_role="pop-up"]      border pixel 0, floating enable
+for_window [window_role="task_dialog"] border pixel 0, floating enable
+
+# remove border from windows
+for_window [class="Firefox"]                    border pixel 0
+for_window [class="qBittorrent"]                border pixel 0
+for_window [class="jetbrains-idea"]             border pixel 0 
+for_window [instance="sun-awt-X11-XDialogPeer"] border pixel 0 
+for_window [class="Thunar"]                     border pixel 0
+for_window [class="Atom"]                       border pixel 0
+for_window [class="Postman"]                    border pixel 0
+for_window [class="Slack"]                      border pixel 0
+for_window [class="(?i)spotify"]                border pixel 0
+for_window [class="Chrom*"]                     border pixel 0
+
+# sticky instance
+for_window [instance="sticky"] floating enable
+for_window [instance="sticky"] move scratchpad
+for_window [instance="sticky"] sticky enable

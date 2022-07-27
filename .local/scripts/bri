@@ -1,0 +1,54 @@
+#!/usr/bin/env sh
+#
+# Script to change the brightness levels.
+#
+
+err() {
+    printf '%s\n' "$1"
+    exit 1
+}
+
+usg() {
+    printf '%s\n' "usage: brightness [option] [argument]"
+    printf '\n'
+    printf '%s\n'   "Options:"
+    printf '\t%s\n' "-i, --increase - increase brightness by \`argument'"
+    printf '\t%s\n' "-d, --decrease - decrease brightness by \`argument'"
+    printf '\t%s\n' "-h, --help     - display this"
+    exit
+}
+
+case "$1" in
+    "-i"|"--increase")
+        [ -z "$2" ] && err "No argument specified for increase."
+        [ -n "$(printf '%s' "$2" | tr -d "\[0-9\]")" ] && \
+            err "The argument needs to be an integer."
+
+        inc=true
+        arg="$2"
+        ;;
+    "-d"|"--decrease")
+        [ -z "$2" ] && err "No argument specified for decrease."
+        [ -n "$(printf '%s' "$2" | tr -d "\[0-9\]")" ] && \
+            err "The argument needs to be an integer."
+
+        arg="$2"
+        ;;
+    ""|"-h"|"--help") usg ;;
+    *)                err "Unrecognized option '$1', see dvol --help" ;;
+esac
+
+if [ -n "$WAYLAND_DISPLAY" ]; then
+    if [ "$inc" ]; then
+        arg="+${arg}%"
+    else
+        arg="${arg}%-"
+    fi
+    sudo brightnessctl -d intel_backlight set "$arg" > /dev/null
+else 
+    if [ "$inc" ]; then
+        xbacklight -inc "${arg}" > /dev/null
+    else
+        xbacklight -dec "${arg}" > /dev/null
+    fi
+fi

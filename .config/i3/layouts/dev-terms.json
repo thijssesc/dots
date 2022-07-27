@@ -1,0 +1,70 @@
+{
+  "border": "pixel",
+  "floating": "auto_off",
+  "layout": "splitv",
+  "percent": 0.5,
+  "type": "con",
+  "nodes": [
+    {
+      "border": "pixel",
+      "current_border_width": 3,
+      "floating": "auto_off",
+      "geometry": {
+        "height": 340,
+        "width": 644,
+        "x": 0,
+        "y": 0
+      },
+      "name": "archey ❐ 2 ● 1 bash",
+      "percent": 0.5,
+      "swallows": [
+        {
+          "class": "^st\\-256color$",
+          "instance": "^st\\-256color$"
+        }
+      ],
+      "type": "con"
+    },
+    {
+      "border": "pixel",
+      "current_border_width": 3,
+      "floating": "auto_off",
+      "geometry": {
+        "height": 340,
+        "width": 644,
+        "x": 0,
+        "y": 0
+      },
+      "name": "archey ❐ 3 ● 1 bash",
+      "percent": 0.5,
+      "swallows": [
+        {
+          "class": "^st\\-256color$",
+          "instance": "^st\\-256color$"
+        }
+      ],
+      "type": "con"
+    }
+  ]
+}
+
+{
+  "border": "pixel",
+  "current_border_width": 3,
+  "floating": "auto_off",
+  "geometry": {
+    "height": 340,
+    "width": 644,
+    "x": 0,
+    "y": 0
+  },
+  "name": "archey ❐ 1 ● 1 bash",
+  "percent": 0.5,
+  "swallows": [
+    {
+      "class": "^st\\-256color$",
+      "instance": "^st\\-256color$"
+    }
+  ],
+  "type": "con"
+}

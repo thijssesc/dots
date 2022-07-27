@@ -1,0 +1,33 @@
+#!/usr/bin/env sh
+
+# Remaps control to caps
+setxkbmap -option ctrl:nocaps
+
+bl="$(xmodmap -pke | grep ' 51 ')"
+bs="$(xmodmap -pke | grep ' 22 ')"
+
+blc="$(printf '%s' "$bl" | tr ' ' '\n' | grep -c 'backslash')"
+bsc="$(printf '%s' "$bs" | tr ' ' '\n' | grep -c 'BackSpace')"
+
+if [ "$blc" -gt 1 ] && [ "$bsc" -gt 1 ]; then
+    st1="off"
+    st2="on"
+else
+    st1="on"
+    st2="off"
+fi
+
+if [ "$sel" != "on" ] && [ "$sel" != "off" ]; then
+    sel="$(printf '%s\n%s' "$st2" "$st1" \
+        | dmenu -i -p "hhkb mode is $st1, turn it $st2?")"
+    [ -z "$sel" ] && exit 0
+fi
+
+if [ "$sel" = "on" ]; then
+    xmodmap -e "keycode 22 = backslash bar backslash bar"
+    xmodmap -e "keycode 51 = BackSpace BackSpace BackSpace BackSpace"
+elif [ "$sel" = "off" ]; then
+    xmodmap -e "keycode 22 = BackSpace BackSpace BackSpace BackSpace"
+    xmodmap -e "keycode 51 = backslash bar backslash bar"
+fi
+

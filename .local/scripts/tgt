@@ -1,0 +1,18 @@
+#!/usr/bin/env sh
+#
+# Script to toggle the system tray on and off for i3/sway.
+#
+
+[ -n "$WAYLAND_DISPLAY" ] \
+    && msg="swaymsg"; cfg="$XDG_CONFIG_HOME/i3/config" \
+    || msg="i3-msg"; cfg="$XDG_CONFIG_HOME/sway/config.base"
+on="tray_output     primary"
+off="tray_output     none"
+    
+if [ "$(grep -c "$on" "$cfg")" -eq 1 ]; then
+    sed -i "s/$on/$off/g" "$cfg"
+else
+    sed -i "s/$off/$on/g" "$cfg"
+fi
+    
+$msg reload

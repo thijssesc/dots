@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+
+opt="$(find "$PASSWORD_STORE_DIR" -maxdepth 3 -type f \
+    -name "*.gpg" -printf '%P\n' | sed -e 's/.gpg//g')"
+chs=$(printf '%s\n' "$opt" | dmenu -i -l 10 "$@")
+
+[ -n "$chs" ] || exit
+pass show -c "$chs" 2>/dev/null

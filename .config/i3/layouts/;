@@ -1,0 +1,79 @@
+{
+  "border": "pixel",
+  "floating": "auto_off",
+  "layout": "splitv",
+  "percent": 0.5,
+  "type": "con",
+  "nodes": [
+    {
+      "border": "pixel",
+      "current_border_width": 0,
+      "floating": "auto_off",
+      "geometry": {
+        "height": 340,
+        "width": 644,
+        "x": 0,
+        "y": 0
+      },
+      "name": "sjoerd@archey:~",
+      "percent": 0.14,
+      "swallows": [
+        {
+          "class": "^URxvt$",
+          "instance": "^htop$"
+        }
+      ],
+      "type": "con"
+    },
+    {
+      "border": "pixel",
+      "current_border_width": 0,
+      "floating": "auto_off",
+      "geometry": {
+        "height": 340,
+        "width": 644,
+        "x": 0,
+        "y": 0
+      },
+      "name": "sjoerd@archey:~",
+      "percent": 0.86,
+      "swallows": [
+        {
+          "class": "^URxvt$",
+          "instance": "^torrent$"
+        }
+      ],
+      "type": "con"
+    }
+  ]
+}
+
+{
+  "border": "pixel",
+  "floating": "auto_off",
+  "layout": "splitv",
+  "percent": 0.5,
+  "type": "con",
+  "nodes": [
+    {
+      "border": "pixel",
+      "current_border_width": 0,
+      "floating": "auto_off",
+      "geometry": {
+        "height": 340,
+        "width": 644,
+        "x": 0,
+        "y": 0
+      },
+      "name": "sjoerd@archey:~",
+      "percent": 1,
+      "swallows": [
+        {
+          "class": "^URxvt$",
+          "instance": "^ranger$"
+        }
+      ],
+      "type": "con"
+    }
+  ]
+}
