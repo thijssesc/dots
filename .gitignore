@@ -62,8 +62,6 @@
 !.config/mako/*
 !.config/mpv
 !.config/mpv/*
-!.config/mutt
-!.config/mutt/*
 !.config/neofetch
 !.config/neofetch/*
 !.config/nnn
