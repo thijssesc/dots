@@ -2,7 +2,7 @@
   email = sjoerdthijsse@gmail.com
   name = Sjoerd Thijsse
 [core]
-  editor = nvim
+  editor = "nvim -u NONE"
 [difftool]
   prompt = true
 [diff]
