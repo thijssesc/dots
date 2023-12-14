@@ -43,11 +43,16 @@ nnoremap <C-j> <C-W>j
 nnoremap <C-k> <C-W>k
 nnoremap <C-l> <C-W>l
 
+" splits
+nmap <leader>su <Action>(Unsplit)
+nmap <leader>sv <Action>(SplitVertically)
+nmap <leader>sx <Action>(SplitHorizontally)
+
 " " resize splits
-" nnoremap <A-C-h> :vertical resize -2<CR>
-" nnoremap <A-C-j> :resize +2<CR>
-" nnoremap <A-C-k> :resize -2<CR>
-" nnoremap <A-C-l> :vertical resize +2<CR>
+nmap <A-C-h> <Action>(StretchSplitToLeft)
+nmap <A-C-j> <Action>(StretchSplitToBottom)
+nmap <A-C-k> <Action>(StretchSplitToTop)
+nmap <A-C-l> <Action>(StretchSplitToRight)
 
 " " easy switching from/into terminal buffers
 " tnoreamp <C-n> <C-\><C-n>
@@ -61,141 +66,141 @@ nnoremap <C-l> <C-W>l
 " nnoremap q: <Nop>
 
 " " cycle through qflist and location list
-nnoremap ]q :action PreviousOccurence<CR>
-nnoremap [q :action NextOccurence<CR>
-" nnoremap ]l :lnext<CR>
-" nnoremap [l :lprev<CR>
+nmap ]q <Action>(PreviousOccurence)
+nmap [q <Action>(NextOccurence)
+" nmap ]l :lnext<CR>
+" nmap [l :lprev<CR>
 
 " blanket
-" nnoremap <leader>cp :action blanket.set_report_path<CR>
-" nnoremap <leader>cr :action blanket.refresh<CR>
-nnoremap <leader>cS :action RunCoverage<CR>
-nnoremap <leader>rc :action RunCoverage<CR>
-nnoremap <leader>cs :action HideCoverage<CR>
+" nmap <leader>cp <Action>(blanket.set_report_path)
+" nmap <leader>cr <Action>(blanket.refresh)
+nmap <leader>cS <Action>(RunCoverage)
+nmap <leader>rc <Action>(RunCoverage)
+nmap <leader>cs <Action>(HideCoverage)
 
 " dap
-nnoremap <leader>dc :action Resume<CR>
-" nnoremap <leader>dd :action dap.down<CR>
-nnoremap <leader>dg :action RunToCursor<CR>
-" nnoremap <leader>dh :action dap.hover<CR>
-nnoremap <leader>di :action StepInto<CR>
-nnoremap <leader>do :action StepOver<CR>
-nnoremap <leader>dO :action StepOut<CR>
-nnoremap <leader>dr :action EvaluateExpression<CR>
-" nnoremap <leader>ds :action dap.scopes<CR>
-nnoremap <leader>dS :action Stop<CR>
-nnoremap <leader>dt :action ToggleLineBreakpoint<CR>
-" nnoremap <leader>du :action dap.up<CR>
+nmap <leader>dc <Action>(Resume)
+" nmap <leader>dd <Action>(dap.down)
+nmap <leader>dg <Action>(RunToCursor)
+" nmap <leader>dh <Action>(dap.hover)
+nmap <leader>di <Action>(StepInto)
+nmap <leader>do <Action>(StepOver)
+nmap <leader>dO <Action>(StepOut)
+nmap <leader>dr <Action>(EvaluateExpression)
+" nmap <leader>ds <Action>(dap.scopes)
+nmap <leader>dS <Action>(Stop)
+nmap <leader>dt <Action>(ToggleLineBreakpoint)
+" nmap <leader>du <Action>(dap.up)
 
 " gitsigns
-nnoremap [c         :action VcsShowPrevChangeMarker<CR>
-nnoremap ]c         :action VcsShowNextChangeMarker<CR>
-nnoremap <leader>hs :action Vcs.Diff.IncludeOnlyChangedLinesIntoCommit<CR>
-nnoremap <leader>hr :action Vcs.RollbackChangedLines<CR>
-nnoremap <leader>hS :action Git.Add<CR>
-nnoremap <leader>hu :action Vcs.Diff.ExcludeChangedLinesFromCommit<CR>
-" nnoremap <leader>hR :action gitsigns.reset_buffer<CR>
-nnoremap <leader>hp :action VcsShowCurrentChangeMarker<CR>
-nnoremap <leader>hb :action Annotate<CR>
-" nnoremap <leader>tb :action gitsigns.toggle_current_line_blame<CR>
-" nnoremap <leader>hd :action gitsigns.diffthis<CR>
-" nnoremap <leader>hD :action gitsigns.diffthis('~')<CR>
-" nnoremap <leader>td :action gitsigns.toggle_deleted<CR>
-" onoremap ih :action gitsigns.select_hunk<CR>
-" xnoremap ih :action gitsigns.select_hunk<CR>
+nmap [c         <Action>(VcsShowPrevChangeMarker)
+nmap ]c         <Action>(VcsShowNextChangeMarker)
+nmap <leader>hs <Action>(Vcs.Diff.IncludeOnlyChangedLinesIntoCommit)
+nmapr<leader>hr <Action>(Vcs.RollbackChangedLines)
+nmap <leader>hS <Action>(Git.Add)
+nmap <leader>hu <Action>(Vcs.Diff.ExcludeChangedLinesFromCommit)
+" nmap <leader>hR <Action>(gitsigns.reset_buffer)
+nmap <leader>hp <Action>(VcsShowCurrentChangeMarker)
+nmap <leader>hb <Action>(Annotate)
+" nmap <leader>tb <Action>(gitsigns.toggle_current_line_blame)
+" nmap <leader>hd <Action>(gitsigns.diffthis)
+" nmap <leader>hD <Action>(gitsigns.diffthis('~'))
+" nmap <leader>td <Action>(gitsigns.toggle_deleted)
+" omap ih <Action>(gitsigns.select_hunk)
+" xmap ih <Action>(gitsigns.select_hunk)
 
 " harpoon
-nnoremap <C-n>      :action ToggleBookmarkWithMnemonic<CR>
-nnoremap <C-q>      :action ToggleBookmark<CR>
-nnoremap <C-t>      :action ShowBookmarks<CR>
-nnoremap <leader>hh :action GotoBookmarkH<CR>
-nnoremap <leader>jj :action GotoBookmarkJ<CR>
-nnoremap <leader>kk :action GotoBookmarkK<CR>
-nnoremap <leader>ll :action GotoBookmarkL<CR>
-" nnoremap <leader>s1 :action term.sendCommand(1, 1)<CR>
-" nnoremap <leader>s2 :action term.sendCommand(1, 2)<CR>
-nnoremap <leader>tt :action ActivateTerminalToolWindow<CR>
-nnoremap <leader>tr :action ActivateTerminalToolWindow<CR>
-nnoremap <leader>te :action ActivateTerminalToolWindow<CR>
+nmap <C-n>      <Action>(ToggleBookmarkWithMnemonic)
+nmap <C-q>      <Action>(ToggleBookmark)
+nmap <C-t>      <Action>(ShowBookmarks)
+nmap <leader>hh <Action>(GotoBookmarkH)
+nmap <leader>jj <Action>(GotoBookmarkJ)
+nmap <leader>kk <Action>(GotoBookmarkK)
+nmap <leader>ll <Action>(GotoBookmarkL)
+" nmap <leader>s1 <Action>(term.sendCommand(1, 1))
+" nmap <leader>s2 <Action>(term.sendCommand(1, 2))
+nmap <leader>tt <Action>(ActivateTerminalToolWindow)
+nmap <leader>tr <Action>(ActivateTerminalToolWindow)
+nmap <leader>te <Action>(ActivateTerminalToolWindow)
 
 " lsp
-nnoremap gD         :action GotoTypeDeclaration<CR>
-nnoremap gd         :action GotoDeclarationOnly<CR>
-nnoremap K          :action QuickJavaDoc<CR>
-nnoremap gi         :action GotoImplementation<CR>
-nnoremap <A-S-k>    :action ParameterInfo<CR>
-" nnoremap <leader>wa :action AddToWorkspaces<CR>
-" nnoremap <leader>wr :action RemoveFromWorkspaces<CR>
-" nnoremap <leader>wl :action ListWorkspaces<CR>
-nnoremap <leader>D  :action QuickTypeDefinition<CR>
-nnoremap <leader>rn :action RenameElement<CR>
-nnoremap <leader>ca :action ShowIntentionActions<CR>
-nnoremap gr         :action GotoDeclaration<CR>
-" nnoremap <leader>e  :action ShowLineDiagnostics<CR>
-nnoremap [d         :action GotoPreviousError<CR>
-nnoremap ]d         :action GotoNextError<CR>
-" nnoremap <leader> q :action SetLocList<CR>
-nnoremap <leader>F  :action ReformatCode<CR>
-nnoremap <leader>df :action DebugClass<CR>
-nnoremap <leader>dn :action DebugClass<CR>
-nnoremap <leader>dp :action RunMenu<CR>
-nnoremap <leader>ec :action IntroduceConstant<CR>
-nnoremap <leader>ev :action IntroduceVariable<CR>
-nnoremap <leader>oi :action OptimizeImports<CR>
-vnoremap <leader>ec :action IntroduceConstant<CR>
-vnoremap <leader>em :action ExtractMethod<CR>
-vnoremap <leader>ev :action IntroduceVariable<CR>
+nmap gD         <Action>(GotoTypeDeclaration)
+nmap gd         <Action>(GotoDeclarationOnly)
+nmap K          <Action>(QuickJavaDoc)
+nmap gi         <Action>(GotoImplementation)
+nmap <A-S-k>    <Action>(ParameterInfo)
+" nmap <leader>wa <Action>(AddToWorkspaces)
+" nmap <leader>wr <Action>(RemoveFromWorkspaces)
+" nmap <leader>wl <Action>(ListWorkspaces)
+nmap <leader>D  <Action>(QuickTypeDefinition)
+nmap <leader>rn <Action>(RenameElement)
+nmap <leader>ca <Action>(ShowIntentionActions)
+nmap gr         <Action>(GotoDeclaration)
+" nmap <leader>e  <Action>(ShowLineDiagnostics)
+nmap [d         <Action>(GotoPreviousError)
+nmap ]d         <Action>(GotoNextError)
+" nmap <leader> q <Action>(SetLocList)
+nmap <leader>F  <Action>(ReformatCode)
+nmap <leader>df <Action>(DebugClass)
+nmap <leader>dn <Action>(DebugClass)
+nmap <leader>dp <Action>(RunMenu)
+nmap <leader>ec <Action>(IntroduceConstant)
+nmap <leader>ev <Action>(IntroduceVariable)
+nmap <leader>oi <Action>(OptimizeImports)
+vmap <leader>ec <Action>(IntroduceConstant)
+vmap <leader>em <Action>(ExtractMethod)
+vmap <leader>ev <Action>(IntroduceVariable)
 
 " neogen
-" nnoremap <leader>nf :action neogen.generate<CR>
+" nmap <leader>nf <Action>(neogen.generate)
 
 " telescope
-" nnoremap <leader>cc :action telescope.extensions.blanket.blanket<CR>
-nnoremap <leader>fb :action Switcher<CR>
-nnoremap <leader>fB :action Git.Branches<CR>
-nnoremap <leader>fC :action Vcs.ShowTabbedFileHistory<CR>
-nnoremap <leader>fc :action Vcs.Show.Log<CR>
-" nnoremap <leader>fD :action telescope.builtin.dot_files<CR>
-nnoremap <leader>ff :action SearchEverywhere<CR>
-" nnoremap <leader>fG :action telescope.builtin.git_files<CR>
-nnoremap <leader>fg :action FindInPath<CR>
-nnoremap <leader>fp :action ManageRecentProjects<CR>
-nnoremap <leader>fs :action Vcs.Show.Local.Changes<CR>
-" nnoremap <leader>fS :action telescope.builtin.grep_string<CR>
+" nmap <leader>cc <Action>(telescope.extensions.blanket.blanket)
+nmap <leader>fb <Action>(Switcher)
+nmap <leader>fB <Action>(Git.Branches)
+nmap <leader>fC <Action>(Vcs.ShowTabbedFileHistory)
+nmap <leader>fc <Action>(Vcs.Show.Log)
+" nmap <leader>fD <Action>(telescope.builtin.dot_files)
+nmap <leader>ff <Action>(SearchEverywhere)
+" nmap <leader>fG <Action>(telescope.builtin.git_files)
+nmap <leader>fg <Action>(FindInPath)
+nmap <leader>fp <Action>(ManageRecentProjects)
+nmap <leader>fs <Action>(Vcs.Show.Local.Changes)
+" nmap <leader>fS <Action>(telescope.builtin.grep_string)
 
 " tree
-nnoremap <leader><BS>     :NERDTreeFocus<CR>
-nnoremap <leader><BSlash> :NERDTreeToggle<CR>
+nmap <leader><BS>     :NERDTreeFocus<CR>
+nmap <leader><BSlash> :NERDTreeToggle<CR>
 
 " intellij specific - lsp
-nnoremap <leader>ef :action IntroduceField<CR>
-nnoremap <leader>im :action ImplementMethods<CR>
-nnoremap <leader>om :action OverrideMethods<CR>
-nnoremap gs         :action GotoSuperMethod<CR>
-" nnoremap gt         :action GotoTest<CR>
-vnoremap <leader>ef :action IntroduceField<CR>
+nmap <leader>ef <Action>(IntroduceField)
+nmap <leader>im <Action>(ImplementMethods)
+nmap <leader>om <Action>(OverrideMethods)
+nmap gs         <Action>(GotoSuperMethod)
+" nmap gt         <Action>(GotoTest)
+vmap <leader>ef <Action>(IntroduceField)
 " intellij specific - misc
-nnoremap <C-BS>     :action Terminal.SwitchFocusToEditor<CR>
+nmap <C-BS>     <Action>(Terminal.SwitchFocusToEditor)
 " intellij specific - movement
-nnoremap [m :action MethodUp<CR>
-nnoremap ]m :action MethodDown<CR>
-nnoremap <C-o> :action Back<CR>
-nnoremap <C-i> :action Forward<CR>
-nnoremap g<C-o> <C-o>
-nnoremap g<C-i> <C-i>
+nmap [m <Action>(MethodUp)
+nmap ]m <Action>(MethodDown)
+nmap <C-o> <Action>(Back)
+nmap <C-i> <Action>(Forward)
+nmap g<C-o> <C-o>
+nmap g<C-i> <C-i>
 " intellij specific - toggle elements
-nnoremap <leader>mm :action ViewMainMenu<CR>
-nnoremap <leader>pm :action TogglePresentationMode<CR>
-nnoremap <leader>sb :action ViewStatusBar<CR>
-nnoremap <leader>tb :action ViewToolButtons<CR>
-nnoremap <leader>tg :action EditorToggleShowGutterIcons<CR>
-nnoremap <leader>tl :action EditorToggleShowLineNumbers<CR>
+nmap <leader>mm <Action>(ViewMainMenu)
+nmap <leader>pm <Action>(TogglePresentationMode)
+nmap <leader>sb <Action>(ViewStatusBar)
+nmap <leader>tb <Action>(ViewToolButtons)
+nmap <leader>tg <Action>(EditorToggleShowGutterIcons)
+nmap <leader>tl <Action>(EditorToggleShowLineNumbers)
 " intellij specific - tool windows
-nnoremap <leader>bw :action ActivateBuildToolWindow<CR>
-nnoremap <leader>cw :action ActivateCoverageToolWindow<CR>
-nnoremap <leader>dw :action ActivateDebugToolWindow<CR>
-nnoremap <leader>ew :action ActivateEventLogToolWindow<CR>
-nnoremap <leader>gg :action ActivateVersionControlToolWindow<CR>
-nnoremap <leader>mw :action ActivateMavenToolWindow<CR>
-nnoremap <leader>pw :action ActivateProblemsViewToolWindow<CR>
-nnoremap <leader>rw :action ActivateRunToolWindow<CR>
+nmap <leader>bw <Action>(ActivateBuildToolWindow)
+nmap <leader>cw <Action>(ActivateCoverageToolWindow)
+nmap <leader>dw <Action>(ActivateDebugToolWindow)
+nmap <leader>ew <Action>(ActivateEventLogToolWindow)
+nmap <leader>gg <Action>(ActivateVersionControlToolWindow)
+nmap <leader>mw <Action>(ActivateMavenToolWindow)
+nmap <leader>pw <Action>(ActivateProblemsViewToolWindow)
+nmap <leader>rw <Action>(ActivateRunToolWindow)
