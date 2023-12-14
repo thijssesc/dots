@@ -16,7 +16,7 @@ vim.api.nvim_create_autocmd('BufWritePre', {
 })
 
 local user_term = vim.api.nvim_create_augroup('UserTerm', {})
-vim.api.nvim_create_autocmd('BufWinEnter,TermOpen,WinEnter', {
+vim.api.nvim_create_autocmd({'BufWinEnter', 'TermOpen', 'WinEnter'}, {
     group = user_term,
     pattern = 'term://*',
     command = 'startinsert',

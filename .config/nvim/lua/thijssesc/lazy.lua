@@ -17,11 +17,12 @@ vim.opt.rtp:prepend(lazypath)
 
 local lazy = require('lazy')
 
-vim.keymap.nnoremap { '<leader>uc', lazy.clean }
-vim.keymap.nnoremap { '<leader>ui', lazy.install }
-vim.keymap.nnoremap { '<leader>up', lazy.profile }
-vim.keymap.nnoremap { '<leader>us', lazy.sync }
-vim.keymap.nnoremap { '<leader>uu', lazy.update }
+local keymap_opts = { silent = true, noremap = true }
+vim.keymap.set('n', '<leader>uc', lazy.clean, keymap_opts)
+vim.keymap.set('n', '<leader>ui', lazy.install, keymap_opts)
+vim.keymap.set('n', '<leader>up', lazy.profile, keymap_opts)
+vim.keymap.set('n', '<leader>us', lazy.sync, keymap_opts)
+vim.keymap.set('n', '<leader>uu', lazy.update, keymap_opts)
 
 lazy.setup({
     require('thijssesc.plugins.blanket'),
