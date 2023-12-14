@@ -1,11 +1,9 @@
 -- keymaps
 
-local utils = require('thijssesc.utils')
-
 vim.g.mapleader = ' '
 
--- reload config
-vim.keymap.nnoremap { '<leader>rr', utils.reload }
+-- reload nvim configurations
+-- vim.keymap.nnoremap { '<leader>rr', '' }
 
 -- stop the search highlighting if enabled
 vim.keymap.nnoremap { '<leader>nh', ':set nohlsearch<CR>' }
@@ -18,7 +16,7 @@ vim.keymap.noremap { { 'n', 'v' }, '<leader>y', '"+y' }
 vim.keymap.noremap { { 'n', 'v' }, '<leader>Y', 'gg"+yG' }
 
 -- unmap arrow keys
-vim.keymap.nnoremap { '<Dowp>', '<Nop>' }
+vim.keymap.nnoremap { '<Down>', '<Nop>' }
 vim.keymap.nnoremap { '<Left>', '<Nop>' }
 vim.keymap.nnoremap { '<Right>', '<Nop>' }
 vim.keymap.nnoremap { '<Up>', '<Nop>' }
@@ -40,6 +38,11 @@ vim.keymap.nnoremap { '<C-h>', '<C-w>h' }
 vim.keymap.nnoremap { '<C-j>', '<C-w>j' }
 vim.keymap.nnoremap { '<C-k>', '<C-w>k' }
 vim.keymap.nnoremap { '<C-l>', '<C-w>l' }
+
+-- splits
+vim.keymap.nnoremap { '<leader>su', ':only<CR>' }
+vim.keymap.nnoremap { '<leader>sv', ':vsplit<CR>' }
+vim.keymap.nnoremap { '<leader>sx', ':split<CR>' }
 
 -- resize splits
 vim.keymap.nnoremap { '<A-C-h>', ':vertical resize -2<CR>' }

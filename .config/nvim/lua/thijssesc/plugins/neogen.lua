@@ -1,7 +1,21 @@
 -- neogen
 
-local neogen = require('neogen')
+local M = {
+    'danymat/neogen',
+    name = 'neogen',
+    version = '*',
+}
 
-neogen.setup { enabled = true }
+M.dependencies = {
+    'nvim-treesitter/nvim-treesitter',
+}
 
-vim.keymap.nnoremap { '<leader>nf', neogen.generate }
+M.opts = {
+    enabled = true
+}
+
+M.keys = {
+    { '<leader>nf', [[<cmd>lua require('neogen').generate()<CR>]] }
+}
+
+return M

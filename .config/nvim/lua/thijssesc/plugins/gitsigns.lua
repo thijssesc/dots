@@ -1,9 +1,16 @@
 -- gitsigns
 
-local gitsigns = require('gitsigns')
+local M = {
+    'lewis6991/gitsigns.nvim',
+    name = 'gitsigns',
+    version = '*',
+    event = 'VeryLazy',
+}
 
-gitsigns.setup {
+M.opts = {
     on_attach = function(buffer)
+        local gitsigns = package.loaded.gitsigns
+
         vim.keymap.nnoremap {
             ']c',
             function()
@@ -56,3 +63,5 @@ gitsigns.setup {
         vim.keymap.noremap { { 'o', 'x' }, 'ih', ':<C-U>Gitsigns select_hunk<CR>', { buffer = buffer } }
     end,
 }
+
+return M

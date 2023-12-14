@@ -1,33 +1,35 @@
 -- misc
 
-local function nvim_create_augroups(definitions)
-    for group_name, definition in pairs(definitions) do
-        vim.api.nvim_command('augroup ' .. group_name)
-        vim.api.nvim_command('autocmd!')
-        for _, def in ipairs(definition) do
-            local command = table.concat(vim.tbl_flatten { 'autocmd', def }, ' ')
-            vim.api.nvim_command(command)
+local user_whitespaces = vim.api.nvim_create_augroup('UserWhiteSpaces', {})
+vim.api.nvim_create_autocmd('BufWritePre', {
+    group = user_whitespaces,
+    pattern = '*',
+    callback = function(ev)
+        if vim.bo[ev.buf].filetype == 'java' then
+            return
         end
-        vim.api.nvim_command('augroup END')
-    end
-end
 
-nvim_create_augroups {
-    whitespaces = {
-        -- trim whitespaces when writing
-        { 'BufWritePre', '*', [[:lua require('thijssesc.utils').trim_whitespace()]] },
-    },
-    netrw = {
-        -- remove the <C-l> mapping when in netrw
-        { 'FileType', 'netrw', [[:lua require('thijssesc.utils').remove_netrw_mappings()]] },
-    },
-    -- turned off for harpoon
-    term = {
-        -- enter insert mode when opening/switching to a terminal buffer
-        { 'BufWinEnter,TermOpen,WinEnter', 'term://*', 'startinsert' },
-        -- enter normal mode when exiting a terminal buffer
-        { 'BufLeave', 'term://*', 'stopinsert' },
-        -- disable numbers in terminal
-        { 'TermOpen', '*', 'setlocal nonumber norelativenumber' },
-    },
-}
+        local save = vim.fn.winsaveview()
+        vim.cmd([[keeppatterns %s/\s\+$//e]])
+        vim.fn.winrestview(save)
+    end,
+})
+
+local user_term = vim.api.nvim_create_augroup('UserTerm', {})
+vim.api.nvim_create_autocmd('BufWinEnter,TermOpen,WinEnter', {
+    group = user_term,
+    pattern = 'term://*',
+    command = 'startinsert',
+})
+
+vim.api.nvim_create_autocmd('BufLeave', {
+    group = user_term,
+    pattern = 'term://*',
+    command = 'stopinsert',
+})
+
+vim.api.nvim_create_autocmd('TermOpen', {
+    group = user_term,
+    pattern = '*',
+    command = 'setlocal nonumber norelativenumber',
+})

@@ -1,35 +1,6 @@
 -- utils
 
 local keymap = {}
-local utils = {}
-
-function utils.trim_whitespace()
-    if vim.bo.filetype == 'java' then
-        return
-    end
-
-    local save = vim.fn.winsaveview()
-    vim.cmd([[keeppatterns %s/\s\+$//e]])
-    vim.fn.winrestview(save)
-end
-
-function utils.remove_netrw_mappings()
-    local mappings = { ['n'] = '<C-l>' }
-    for mode, mapping in pairs(mappings) do
-        if vim.fn.hasmapto('<Plug>NetrwRefresh') ~= 0 then
-            vim.api.nvim_buf_del_keymap(0, mode, mapping)
-        end
-    end
-end
-
-function utils.reload()
-    for name, _ in pairs(package.loaded) do
-        if name:match('^thijssesc') then
-            package.loaded[name] = nil
-        end
-    end
-    dofile(vim.env.MYVIMRC)
-end
 
 local function make_mapper(defaults, opts)
     local args, map_args = {}, {}
@@ -70,5 +41,3 @@ for _, v in pairs(modes) do
 end
 
 vim.keymap = vim.tbl_extend('keep', vim.keymap, keymap)
-
-return utils

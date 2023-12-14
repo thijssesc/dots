@@ -1,8 +1,12 @@
 -- blanket
 
-local blanket = require('blanket')
+local M = {
+    'dsych/blanket.nvim',
+    name = 'blanket',
+    version = '*',
+}
 
-blanket.setup {
+M.config = {
     report_path = vim.fn.getcwd() .. '/target/site/jacoco/jacoco.xml',
     file_types = 'java',
     signs = {
@@ -13,7 +17,11 @@ blanket.setup {
     },
 }
 
-vim.keymap.noremap { { 'n', 't' }, '<leader>cp', blanket.set_report_path }
-vim.keymap.noremap { { 'n', 't' }, '<leader>cr', blanket.refresh }
-vim.keymap.noremap { { 'n', 't' }, '<leader>cS', blanket.start }
-vim.keymap.noremap { { 'n', 't' }, '<leader>cs', blanket.stop }
+M.keys = {
+    { '<leader>cp', [[<cmd>lua require('blanket').set_report_path()<CR>]], mode = { 'n', 't' } },
+    { '<leader>cr', [[<cmd>lua require('blanket').refresh()<CR>]], mode = { 'n', 't' } },
+    { '<leader>cS', [[<cmd>lua require('blanket').start()<CR>]], mode = { 'n', 't' } },
+    { '<leader>cs', [[<cmd>lua require('blanket').stop()<CR>]], mode = { 'n', 't' } },
+}
+
+return M

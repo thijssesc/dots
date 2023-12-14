@@ -1,13 +1,25 @@
 -- treesitter
 
-local treesitter = require('nvim-treesitter.configs')
+local M = {
+    'nvim-treesitter/nvim-treesitter',
+    name = 'nvim-treesitter',
+    version = false,
+    event = 'VeryLazy',
+}
 
-treesitter.setup {
+M.dependencies = {
+    'nvim-treesitter/nvim-treesitter-textobjects',
+}
+
+M.build = function()
+    require('nvim-treesitter.install').update({ with_sync = true })()
+end
+
+M.opts = {
     ensure_installed = 'all',
-    sync_install = true,
+    sync_install = false,
     highlight = { enable = true },
     indent = { enable = false },
-    context_commentstring = { enable = true },
     autopairs = { enable = true },
     textobjects = {
         select = {
@@ -60,3 +72,10 @@ treesitter.setup {
         },
     },
 }
+
+M.config = function(_, opts)
+    local treesitter = require('nvim-treesitter.configs')
+    treesitter.setup(opts)
+end
+
+return M

@@ -1,0 +1,12 @@
+{
+    "workspace.checkThirdParty": false,
+    "workspace.library": [
+        "/home/sjoerd/.local/share/nvim/lazy/lazy.nvim",
+        "/home/sjoerd/.config/nvim",
+        "/etc/xdg/nvim",
+        "/usr/local/share/nvim/runtime",
+        "/usr/local/lib/nvim",
+        "/usr/share/vim/vimfiles",
+        "${3rd}/luassert/library"
+    ]
+}

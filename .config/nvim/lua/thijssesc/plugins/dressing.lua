@@ -1,11 +1,22 @@
 -- dressing
 
-local dressing = require('dressing')
+local M = {
+    'stevearc/dressing.nvim',
+    name = 'dressing',
+    version = '*',
+    event = 'VeryLazy',
+}
 
-dressing.setup {
+M.opts = {
     input = {
         enabled = true,
-        winblend = 0,
+        win_options = {
+            winblend = 0,
+        },
     },
-    select = { enabled = true },
+    select = {
+        enabled = true
+    },
 }
+
+return M

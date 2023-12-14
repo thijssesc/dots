@@ -1,8 +1,22 @@
 -- lualine
 
-local lualine = require('lualine')
+local M = {
+    'nvim-lualine/lualine.nvim',
+    name = 'lualine',
+    version = false,
+    event = 'VeryLazy',
+}
 
-lualine.setup {
+M.init = function()
+    vim.g.lualine_laststatus = vim.o.laststatus
+    if vim.fn.argc(-1) > 0 then
+        vim.o.statusline = " "
+    else
+        vim.o.laststatus = 0
+    end
+end
+
+M.opts = {
     options = {
         icons_enabled = true,
         theme = 'catppuccin',
@@ -31,3 +45,5 @@ lualine.setup {
     tabline = {},
     extensions = { 'nvim-tree', 'quickfix' },
 }
+
+return M
