@@ -74,6 +74,9 @@ export _JAVA_AWT_WM_NONREPARENTING=1
 # Add $GOPATH/bin to path
 [ -d "$GOPATH/bin" ] && PATH="$PATH:$GOPATH/bin"
 
+# Add $GOPATH/bin "$HOME/.local/share/nvim/mason/bin" to path
+[ -d "$HOME/.local/share/nvim/mason/bin" ] && PATH="$PATH:$HOME/.local/share/nvim/mason/bin"
+
 # Export secrets
 [ -s "$HOME/.local/scripts/scr" ] && . "$HOME/.local/scripts/scr"
 

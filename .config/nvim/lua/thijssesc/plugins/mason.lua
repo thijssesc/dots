@@ -41,6 +41,10 @@ M.config = function(_, opts)
     require('mason').setup(opts)
     local mr = require('mason-registry')
 
+    vim.api.nvim_create_user_command('MasonInstallAll', function ()
+      vim.cmd('MasonInstall ' .. table.concat(opts.ensure_installed, ' '))
+    end, {})
+
     local function ensure_installed()
         for _, tool in ipairs(opts.ensure_installed) do
             local p = mr.get_package(tool)
