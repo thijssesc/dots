@@ -62,8 +62,9 @@ autoload edit-command-line; zle -N edit-command-line
 bindkey '^e' edit-command-line
 
 # nvm support
-[ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"
+[ -s "/usr/share/nvm/bash_completion" ] && . "/usr/share/nvm/bash_completion"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+source /usr/share/nvm/init-nvm.sh
 
 # Include aliases and functions
 [ -f "$XDG_CONFIG_HOME/bash/aliases" ] && \
@@ -87,8 +88,3 @@ icy
 # Terminal Aliases
 [ -f "$XDG_CONFIG_HOME/bash/taliases" ] && \
     . "$XDG_CONFIG_HOME/bash/taliases"
-
-# Load zsh-syntax-highlighting; should be last.
-[ -f "$XDG_CONFIG_HOME/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ] && \
-    . "$XDG_CONFIG_HOME/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" \
-    > /dev/null

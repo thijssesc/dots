@@ -42,7 +42,7 @@ M.opts = {
                 },
             },
         },
-        tsserver = {},
+        ts_ls = {},
         yamlls = {
             filetypes = { 'yaml', 'yaml.docker-compose' },
         },

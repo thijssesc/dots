@@ -80,8 +80,8 @@ export _JAVA_AWT_WM_NONREPARENTING=1
 # Export secrets
 [ -s "$HOME/.local/scripts/scr" ] && . "$HOME/.local/scripts/scr"
 
-# Set if is dekstop or laptop based if machine has wifi
-if [ "$(lspci -k | grep -ic ath11k)" -gt 0 ]; then
+# Set if is desktop or laptop based if machine has wifi
+if [ "$(lsmod | grep -ic iwlwifi)" -gt 0 ]; then
     export TOP_TYPE="laptop"
 else
     export TOP_TYPE="desktop"

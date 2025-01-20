@@ -16,4 +16,3 @@ alias poc='sudo pkill openvpn 2>/dev/null'
 
 # Other
 alias tabbed-surf='tabbed -d -r 2 surf -e "surf" 2>/dev/null'
-alias nvidia-settings='nvidia-settings --config="$XDG_CONFIG_HOME/nvidia/settings"'

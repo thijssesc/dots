@@ -8,8 +8,8 @@
 
 battery() {
     bat=$(acpi)
-    sta=$(printf '%s' "$bat" | awk '{print $3}' | sed 's/,//g')
-    per=$(printf '%s' "$bat" | awk '{print $4}' | sed 's/,//; s/%//')
+    sta=$(printf '%s' "$bat" | awk -F ':|,' '{print $2}' | sed 's/ //g')
+    per=$(printf '%s' "$bat" | awk -F ', '  '{print $2}' | sed 's/%//')
 
     case "$per" in
         [0-9]|1[0-9])         clr="$(colors 1)"; icn="" ;;
@@ -19,8 +19,8 @@ battery() {
         *)                    clr="$(colors 7)"; icn="" ;;
     esac
     case "$sta" in
-        "Charging")    icn=" " ;;
-        "Full")        icn="" ;;
+        "Notcharging") icn=" " ;;
+        "Discharging") icn="" ;;
         *)             icn="" ;;
     esac
 

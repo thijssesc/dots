@@ -24,9 +24,15 @@ if [ "$sel" != "on" ] && [ "$sel" != "off" ]; then
 fi
 
 if [ "$sel" = "on" ]; then
+    xmodmap -e "keycode 9 = grave asciitilde"
+    xmodmap -e "keycode 49 = Escape"
+
     xmodmap -e "keycode 22 = backslash bar backslash bar"
     xmodmap -e "keycode 51 = BackSpace BackSpace BackSpace BackSpace"
 elif [ "$sel" = "off" ]; then
+    xmodmap -e "keycode 9 = Escape"
+    xmodmap -e "keycode 49 = grave asciitilde"
+
     xmodmap -e "keycode 22 = BackSpace BackSpace BackSpace BackSpace"
     xmodmap -e "keycode 51 = backslash bar backslash bar"
 fi
