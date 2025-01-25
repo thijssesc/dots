@@ -19,9 +19,9 @@ battery() {
         *)                    clr="$(colors 7)"; icn="" ;;
     esac
     case "$sta" in
-        "Notcharging") icn=" " ;;
-        "Discharging") icn="" ;;
-        *)             icn="" ;;
+        "Notcharging"|"Charging") icn=" " ;;
+        "Discharging")            icn="" ;;
+        *)                        icn="" ;;
     esac
 
     printf '%s %s %s' "$clr" "$icn" "$per%"
