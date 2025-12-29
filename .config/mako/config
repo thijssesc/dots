@@ -1,8 +1,12 @@
-font=RobotoMono
-format=<b>%s</b>\n%b
-background-color=#22a7f0
-border-color=#22a7f0
-text-color=#ecf0f1
-default-timeout=3500
-anchor=top-right
-margin=12,12
+default-timeout=10000
+margin=24,24
+
+# Colors
+background-color=#89b4fa
+text-color=#1e1e2e
+border-color=#89b4fa
+progress-color=over #313244
+
+[urgency=high]
+background-color=#f38ba8
+border-color=#f38ba8

@@ -3,9 +3,15 @@
 devices=$(bluetoothctl -- devices)
 names=$(printf '%s' "$devices"  | cut -d ' ' -f 2-)
 
-chs=$(printf '%s\n' "$names" | dmenu -i -l 10 "$@")
-[ -n "$chs" ] || exit
-mac=$(printf '%s\n' "$devices" | grep -i "$chs" | cut -d ' ' -f 2)
+if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
+    menu="bemenu --center --width-factor 0.20 --list 10 $BEMENU_OPTS"
+else
+    menu="dmenu -i -l 10"
+fi
+
+choices=$(printf '%s\n' "$names" | $menu --prompt ""  "$@")
+[ -n "$choices" ] || exit
+mac=$(printf '%s\n' "$devices" | grep -i "$choices" | cut -d ' ' -f 2)
 
 bluetoothctl -- trust "$mac" > /dev/null
 bluetoothctl -- pair "$mac" > /dev/null

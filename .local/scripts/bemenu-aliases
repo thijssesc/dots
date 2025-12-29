@@ -1,26 +1,31 @@
 #!/usr/bin/env sh
 #
-# Script to run dmenu with aliases.
+# Script to run bemenu with aliases.
 #
 
 # shellcheck source=/dev/null
-cache="$XDG_CACHE_HOME/dmenu_run"
-history="$XDG_CACHE_HOME/dmenu_history"
+# shellcheck disable=SC2086
+
+cache="$XDG_CACHE_HOME/bemenu_run"
+history="$XDG_CACHE_HOME/bemenu_history"
 
 . "$XDG_CONFIG_HOME/bash/aliases"
 
 aliases="$(alias | cut -f1 -d "=" | tr -d "\'")"
-(printf '%s\n' "$aliases"; dmenu_path | tail -n +2) > "$cache"
+executables="$(IFS=:; find -L $PATH -maxdepth 1 -type f -executable 2>/dev/null | sort -u | awk -F/ '{print $NF}')"
+(printf '%s\n' "$aliases"; printf '%s\n' "$executables") > "$cache"
 
 [ -z "$history" ] && touch "$history"
 sorted="$(sort "$history" | uniq -c | sort -hr | colrm 1 8)"
-command="$( (printf '%s\n' "$sorted"; grep -vxF "$sorted" "$cache") | dmenu "$@")"
+
+command="$( (printf '%s\n' "$sorted"; grep -vxF "$sorted" "$cache") | \
+    bemenu -c --width-factor 0.20 --prompt '' --list 10 $BEMENU_OPTS "$@")"
 
 if [ "$command" != "" ] && [ "$(grep "$command" "$cache")" != "" ]; then
     printf '%s\n' "$command" >> "$history"
     executed="$(alias | grep "$command=" | cut -f2 -d "'" | tr -d "'")"
+    printf '%s\n' "$executed"
     [ -z "$executed" ] && executed="$command"
 
     printf '%s\n' "$executed" | sh
 fi
-

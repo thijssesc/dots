@@ -1,0 +1,138 @@
+#!/usr/bin/env bash
+# vim: set filetype=sh tabstop=2 shiftwidth=2 expandtab
+
+# By putting this script on your PATH, you can run it like:
+# $ kubectl kaas [fetch|purge|nonprd|prd|self-update]
+# to fetch KaaS clusters and add them to your kubeconfig
+# and convert the configuration using kubelogin.
+# It will also purge unreachable clusters from your kubeconfig
+# by checking if the nodes are reachable and deleting the context
+# if they are not.
+# This script requires the following tools to be installed:
+# kubectl, gh, az, kubelogin
+
+# Check for updates against a different ref
+REF="${KUBECTL_KAAS_REF:-main}"
+
+# Filter out powered off clusters by default
+FILTER="${KUBECTL_KAAS_FILTER:-"?powerState.code == 'Running'"}"
+
+# Fetches KaaS clusters and adds them to kubeconfig
+# if they are not already present and convert with kubelogin
+fetch() {
+  if [[ ! -x "$(command -v az)" ]]; then
+    printf "az is not installed\n  see: https://learn.microsoft.com/en-us/cli/azure/\n"
+    exit 1
+  fi
+
+  if [[ ! -x "$(command -v kubelogin)" ]]; then
+    printf "kubelogin is not installed\n  see: https://azure.github.io/kubelogin/install.html\n"
+    exit 1
+  fi
+
+  printf "Fetching clusters\n"
+  for sub in $(az account list --refresh -o tsv --query "[].name" 2>/dev/null | grep "eep-kaas"); do
+    az aks list --subscription "$sub" -o tsv --query "[${FILTER}].[name, resourceGroup]" | while read -r name rsg; do
+      if ! kubectl config get-contexts "$name" 1>/dev/null 2>&1; then
+        az aks get-credentials --subscription "$sub" -n "$name" -g "$rsg" --overwrite-existing
+        kubelogin convert-kubeconfig -l azurecli --context "$name"
+      fi
+    done
+  done
+}
+
+# Purges unreachable clusters from kubeconfig by
+# checking in parallel if the nodes are reachable
+# and sequentially deleting the contexts
+purge() {
+  printf "Purging unreachable clusters\n"
+  kubectl config get-contexts --output="name" |
+    grep "^k8s-" |
+    xargs -n 1 -P 8 -I {} bash -c 'kubectl auth whoami --context "$@" --request-timeout="3s" 1>/dev/null 2>&1 || echo "$@"' _ {} |
+    xargs -n 1 kubectl config delete-context
+}
+
+nonprd() {
+  kubectl config get-contexts --output="name" | grep "k8s-nonprd-kaas" | xargs kubectl config use-context
+}
+
+prd() {
+  kubectl config get-contexts --output="name" | grep "k8s-prd-kaas" | xargs kubectl config use-context
+}
+
+# Check if there is an update available by fetching the
+# latest version from the repository and comparing it
+update_check() {
+  if [[ ! -x "$(command -v gh)" ]]; then
+    printf "Missing commandline tool 'gh', cannot check for an update.\n  see: https://cli.github.com/\n"
+  else
+    set -eo pipefail
+    diff -Bbq <(gh api "/repos/RoyalAholdDelhaize/tech-nl-kaas-infra/contents/scripts/kubectl-kaas?ref=${REF}" --jq '.content | @base64d') \
+      "$0" 1>/dev/null 2>&1 || printf "Update available, run: kubectl kaas self-update\n"
+  fi
+}
+
+# Self update the script by fetching the latest version
+# from the repository and overwriting the current script
+# any error during the update will cause the script to exit
+update() {
+  local agree
+  if [[ ! -w "$0" ]]; then
+    echo "You seem to have no write access to update this script." >&2
+    read -p "Do you want to attempt to use sudo to update? [yN] " agree
+    if ! [[ "${agree,,}" =~ ^y(es)?$ ]]; then
+      echo "Update cancelled." >&2
+      return 1
+    fi
+  fi
+  if [[ ! -x "$(command -v gh)" ]]; then
+    printf "Missing commandline tool 'gh', cannot perform an update.\n  see: https://cli.github.com/\n"
+  else
+    set -eo pipefail
+    printf "Self updating: %s\n" "$0"
+    CONTENT="$(gh api "/repos/RoyalAholdDelhaize/tech-nl-kaas-infra/contents/scripts/kubectl-kaas?ref=${REF}" --jq '.content | @base64d')"
+    if [[ -w "$0" ]]; then
+      echo "${CONTENT}" >"$0" && chmod +x "$0"
+    else
+      echo "${CONTENT}" | sudo tee "$0" > /dev/null
+    fi
+  fi
+}
+
+# Main entrypoint of the script
+if [[ ! -x "$(command -v kubectl)" ]]; then
+  printf "kubectl is not installed, which is required.\n  see: https://kubernetes.io/docs/tasks/tools/\n"
+  exit 1
+fi
+
+case "${@: -1}" in
+fetch)
+  fetch
+  ;;
+purge)
+  purge
+  ;;
+nonprd)
+  nonprd
+  ;;
+prd)
+  prd
+  ;;
+"self-update")
+  update
+  ;;
+"--help")
+  printf "Usage: kubectl kaas [fetch|purge|nonprd|prd|self-update]\n\n"
+  printf "  fetch       - Fetches KaaS clusters and adds them to kubeconfig\n"
+  printf "  purge       - Purges unreachable clusters from kubeconfig\n"
+  printf "  nonprd      - Switch to the nonprd context\n"
+  printf "  prd         - Switch to the prd context\n"
+  printf "  self-update - Update the script to the latest version\n\n"
+  printf "Without any arguments, it will fetch and purge.\n"
+  ;;
+*)
+  fetch
+  purge
+  update_check
+  ;;
+esac

@@ -38,14 +38,14 @@ case "$1" in
     *)                err "Unrecognized option '$1', see dvol --help" ;;
 esac
 
-if [ -n "$WAYLAND_DISPLAY" ]; then
+if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
     if [ "$inc" ]; then
         arg="+${arg}%"
     else
         arg="${arg}%-"
     fi
     sudo brightnessctl -d intel_backlight set "$arg" > /dev/null
-else 
+else
     if [ "$inc" ]; then
         xbacklight -inc "${arg}" > /dev/null
     else

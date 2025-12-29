@@ -55,10 +55,10 @@ export XSERVERRC="$XDG_CONFIG_HOME/X11/xserverrc"
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh/"
 
 # Set clipboard variable based on wayland
-if [ -n "$WAYLAND_DISPLAY" ]; then
-    export CLIPBOARD=wl-copy
+if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
+  export CLIPBOARD=wl-copy
 else
-    export CLIPBOARD=xclip
+  export CLIPBOARD=xclip
 fi
 
 # nnn config
@@ -72,6 +72,14 @@ export NNN_COPIER="$CLIPBOARD"
 # Other environment variables
 export _JAVA_AWT_WM_NONREPARENTING=1
 
+# bemenu options
+. "$HOME/.local/scripts/clr"
+background="$(background)"
+foreground="$(foreground)"
+blue="$(colors 4)"
+red="$(colors 1)"
+export BEMENU_OPTS="--cb $background --cf $background --fb $background --ff $foreground --nb $background --nf $foreground --hb $blue --hf $background --tb $background --tf $red --ab $background --af $foreground"
+
 # Add bin & scripts to path
 [ -d "$HOME/.local/bin" ] && PATH="$PATH:$HOME/.local/bin"
 [ -d "$HOME/.local/scripts" ] && PATH="$PATH:$HOME/.local/scripts"
@@ -79,8 +87,14 @@ export _JAVA_AWT_WM_NONREPARENTING=1
 # Add $GOPATH/bin to path
 [ -d "$GOPATH/bin" ] && PATH="$PATH:$GOPATH/bin"
 
-# Add $GOPATH/bin "$HOME/.local/share/nvim/mason/bin" to path
+# Add "$HOME/.local/share/nvim/mason/bin" to path
 [ -d "$HOME/.local/share/nvim/mason/bin" ] && PATH="$PATH:$HOME/.local/share/nvim/mason/bin"
+
+# Add "$HOME/.local/share/bob/nvim-bin" to path
+[ -d "$HOME/.local/share/bob/nvim-bin" ] && PATH="$PATH:$HOME/.local/share/bob/nvim-bin"
+
+# Add "/opt/zscaler/bin" to path
+[ -d "/opt/zscaler/bin" ] && PATH="$PATH:/opt/zscaler/bin"
 
 # Export secrets
 [ -s "$HOME/.local/scripts/scr" ] && . "$HOME/.local/scripts/scr"
@@ -93,13 +107,13 @@ else
 fi
 
 if [ -z "$DISPLAY" ] && [ "$(tty)" = "/dev/tty1" ]; then
-    exec startx "$XDG_CONFIG_HOME/X11/xinitrc" dwm
+    MOZ_ENABLE_WAYLAND=1 XKB_DEFAULT_LAYOUT=us exec hyprland
 elif [ -z "$DISPLAY" ] && [ "$(tty)" = "/dev/tty2" ]; then
-    exec startx "$XDG_CONFIG_HOME/X11/xinitrc" awesome
+    exec startx "$XDG_CONFIG_HOME/X11/xinitrc" dwm
 elif [ -z "$DISPLAY" ] && [ "$(tty)" = "/dev/tty3" ]; then
-    XKB_DEFAULT_LAYOUT=us exec sway
+    exec startx "$XDG_CONFIG_HOME/X11/xinitrc" awesome
 fi
 
 # If running bash include the ~/.bashrc file
-printf '%s' "$0" | grep "bash$" >/dev/null && \
-    [ -f "$XDG_CONFIG_HOME/bashrc" ] && . "$XDG_CONFIG_HOME/bashrc"
+printf '%s' "$0" | grep "bash$" >/dev/null &&
+  [ -f "$XDG_CONFIG_HOME/bashrc" ] && . "$XDG_CONFIG_HOME/bashrc"

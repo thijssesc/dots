@@ -7,38 +7,38 @@
 . ~/.local/scripts/clr
 
 battery() {
-    bat=$(acpi)
-    sta=$(printf '%s' "$bat" | awk -F ':|,' '{print $2}' | sed 's/ //g')
-    per=$(printf '%s' "$bat" | awk -F ', '  '{print $2}' | sed 's/%//')
+    battery=$(acpi)
+    status=$(printf '%s' "$battery" | awk -F ':|,' '{print $2}' | sed 's/ //g')
+    percentage=$(printf '%s' "$battery" | awk -F ', '  '{print $2}' | sed 's/%//')
 
-    case "$per" in
-        [0-9]|1[0-9])         clr="$(colors 1)"; icn="" ;;
-        2[0-9]|3[0-9]|4[0-9]) clr="$(colors 3)"; icn="" ;;
-        5[0-9]|6[0-9])        clr="$(colors 4)"; icn="" ;;
-        7[0-9]|8[0-9])        clr="$(colors 2)"; icn="" ;;
-        *)                    clr="$(colors 7)"; icn="" ;;
+    case "$percentage" in
+        [0-9]|1[0-9])         color="$(colors 1)"; icon="" ;;
+        2[0-9]|3[0-9]|4[0-9]) color="$(colors 3)"; icon="" ;;
+        5[0-9]|6[0-9])        color="$(colors 4)"; icon="" ;;
+        7[0-9]|8[0-9])        color="$(colors 2)"; icon="" ;;
+        *)                    color="$(colors 7)"; icon="" ;;
     esac
-    case "$sta" in
-        "Notcharging"|"Charging") icn=" " ;;
-        "Discharging")            icn="" ;;
-        *)                        icn="" ;;
+    case "$status" in
+        "Notcharging"|"Charging") icon=" " ;;
+        "Discharging")            icon="" ;;
+        *)                        icon="" ;;
     esac
 
-    printf '%s %s %s' "$clr" "$icn" "$per%"
+    printf '%s %s %s' "$color" "$icon" "$percentage%"
 }
 
 cpu() {
     cpu=$(mpstat 1 1 | sed '$!d' | awk '{print $3}')
 
     case "$(printf '%.f' "$cpu")" in
-        [0-9]|1[0-9])         clr="$(colors 7)" ;;
-        2[0-9]|3[0-9]|4[0-9]) clr="$(colors 2)" ;;
-        5[0-9]|6[0-9])        clr="$(colors 4)" ;;
-        7[0-9]|8[0-9])        clr="$(colors 3)" ;;
-        *)                    clr="$(colors 1)" ;;
+        [0-9]|1[0-9])         color="$(colors 7)" ;;
+        2[0-9]|3[0-9]|4[0-9]) color="$(colors 2)" ;;
+        5[0-9]|6[0-9])        color="$(colors 4)" ;;
+        7[0-9]|8[0-9])        color="$(colors 3)" ;;
+        *)                    color="$(colors 1)" ;;
     esac
 
-    printf '%s %s %s' "$clr" "" "$cpu%"
+    printf '%s %s %s' "$color" "" "$cpu%"
 }
 
 datee() {
@@ -46,56 +46,45 @@ datee() {
 }
 
 disk() {
-    clr=$(colors 7)
-    dsk=$(df -h -P "$HOME" | sed '$!d' | awk '{print $4}')
-    printf '%s %s %s' "$clr" "" "$dsk"
+    color=$(colors 7)
+    disk=$(df -h -P "$HOME" | sed '$!d' | awk '{print $4}')
+
+    printf '%s %s %s' "$color" "" "$disk"
 }
 
 mediaplayer() {
-    ply="${BLOCK_INSTANCE:-spotifyd}"
-    arg="--player=$ply"
-    msg="$(playerctl "$arg" metadata --format '{{ artist }} - {{ title }}')"
+    player="${BLOCK_INSTANCE:-spotifyd}"
+    args="--player=$player"
+    message="$(playerctl "$args" metadata --format '{{ artist }} - {{ title }}')"
 
     case "$BLOCK_BUTTON" in
-        1) playerctl "$arg" previous ;;
-        2) playerctl "$arg" play-pause ;;
-        3) playerctl "$arg" next ;;
+        1) playerctl "$args" previous ;;
+        2) playerctl "$args" play-pause ;;
+        3) playerctl "$args" next ;;
     esac
 
-    [ -z "$msg" ] && return
-    [ -z "$DWM" ] && msg="$(printf '%s' "$msg" | sed -e 's/\&/&amp;/g')"
+    [ -z "$message" ] && return
+    [ -z "$DWM" ] && message="$(printf '%s' "$message" | sed -e 's/\&/&amp;/g')"
 
-    printf '%s %s %s' "#2edb59" "" "$msg"
+    printf '%s %s %s' "#2edb59" "" "$message"
 }
 
 memory() {
-    mem=$(free | sed -ne '/^Mem:\(.*\)/p')
-    ttl=$(printf '%s' "$mem" | awk '{print $2/1024/1024}')
-    fre=$(printf '%s' "$mem" | awk '{print ($4+$6)/1024/1024}')
-    use=$(printf '%s\n' "$ttl - $fre" | bc -l)
-    per=$(printf '%s\n' "$use / $ttl * 100" | bc -l)
+    memory=$(free | sed -ne '/^Mem:\(.*\)/p')
+    total=$(printf '%s' "$memory" | awk '{print $2/1024/1024}')
+    free=$(printf '%s' "$memory" | awk '{print ($4+$6)/1024/1024}')
+    used=$(printf '%s\n' "$total - $free" | bc -l)
+    percentage=$(printf '%s\n' "$used / $total * 100" | bc -l)
 
-    case "$per" in
-        [0-9]|1[0-9])         clr="$(colors 1)" ;;
-        2[0-9]|3[0-9]|4[0-9]) clr="$(colors 3)" ;;
-        5[0-9]|6[0-9])        clr="$(colors 4)" ;;
-        7[0-9]|8[0-9])        clr="$(colors 2)" ;;
-        *)                    clr="$(colors 7)" ;;
+    case "$percentage" in
+        [0-9]|1[0-9])         color="$(colors 1)" ;;
+        2[0-9]|3[0-9]|4[0-9]) color="$(colors 3)" ;;
+        5[0-9]|6[0-9])        color="$(colors 4)" ;;
+        7[0-9]|8[0-9])        color="$(colors 2)" ;;
+        *)                    color="$(colors 7)" ;;
     esac
 
-    printf '%s %s %.f%%' "$clr" "" "$per"
-}
-
-openvpn() {
-    clr=$(colors 1)
-    txt="dis"
-
-    if [ -n "$(pidof openvpn)" ]; then
-        clr=$(colors 2)
-        txt="con"
-    fi
-
-    printf '%s %s %s' "$clr" "" "$txt"
+    printf '%s %s %.f%%' "$color" "" "$percentage"
 }
 
 timee() {
@@ -108,70 +97,68 @@ updates() {
     esac
 
     aur="${1:-true}"
-    sil="${2:-false}"
-    tmp="$(mktemp -d)"
-    sudo pacman -Sy --dbpath "$tmp" --logfile /dev/null > /dev/null
-    upt=$(pacman -Qu 2> /dev/null | grep -cv '\[.*\]')
+    silent="${2:-false}"
+    temp="$(mktemp -d)"
+    chmod +x "$temp"
+    sudo pacman -Sy --dbpath "$temp" --logfile /dev/null > /dev/null
+    updates=$(pacman -Qu 2> /dev/null | grep -cv '\[.*\]')
     [ "$aur" = "true" ] && \
-        upt=$(( upt + $(yay -Qua | wc -l) ))
+        updates=$(( updates + $(yay -Qua | wc -l) ))
 
-    if [ "$upt" -gt 0 ]; then
-        clr=$(colors 2)
-        msg="$upt update(s)"
-    elif [ "$sil" != false ]; then
-        clr=$(colors 3)
-        msg="sys up to date"
+    if [ "$updates" -gt 0 ]; then
+        color=$(colors 2)
+        message="$updates update(s)"
+    elif [ "$silent" != false ]; then
+        color=$(colors 3)
+        message="sys up to date"
     fi
 
-    [ -n "$clr" ] && [ -n "$msg" ] && printf '%s %s %s' "$clr" "" "$msg"
+    [ -n "$color" ] && [ -n "$message" ] && printf '%s %s %s' "$color" "" "$message"
 }
 
 volume() {
-    mix="default"
-    stp="${1:-5%}"
-    # pactl set-sink-volume @DEFAULT_SINK@ "$arg"
-    # vol="$(pactl get-sink-volume @DEFAULT_SINK@ | sed 1q | awk '{ print $5 }' | sed 's/%//')"
-    # sta="$(pactl get-sink-mute @DEFAULT_SINK@ | awk '{ print $2 }')"
-    ctl="$(amixer -D $mix scontrols \
+    mixer="default"
+    step="${1:-5%}"
+    control="$(amixer -D $mixer scontrols \
         | sed -n "s/Simple mixer control '\([A-Za-z ]*\)',0/\1/p; 1q")"
-    cap="$(amixer -D $mix get "$ctl" \
+    capture="$(amixer -D $mixer get "$control" \
         | sed -n 's/ \+Capabilities:.*volume.*/Capture/p')"
-    dat="$(amixer -D $mix get "$ctl" "$cap" | sed '$!d')"
-    vol="$(printf '%s' "$dat" | awk '{print $5}' | sed -e 's/\[\(.*\)\%\]/\1/')"
-    sta="$(printf '%s' "$dat" | awk '{print $6}' | sed -e 's/\[\(.*\)\]/\1/')"
+    dat="$(amixer -D $mixer get "$ctl" "$capture" | sed '$!d')"
+    volume="$(printf '%s' "$dat" | awk '{print $5}' | sed -e 's/\[\(.*\)\%\]/\1/')"
+    status="$(printf '%s' "$dat" | awk '{print $6}' | sed -e 's/\[\(.*\)\]/\1/')"
 
-    [ "$sta" = "off" ] && vol=0
+    [ "$status" = "off" ] && volume=0
     case "$BLOCK_BUTTON" in
-        3) notify-send "$mix $ctl" ; amixer -q -D $mix sset "$ctl" toggle ;;
-        4) amixer -q -D $mix sset "$ctl" "${stp}+" unmute ;;
-        5) amixer -q -D $mix sset "$ctl" "${stp}-" unmute ;;
+        3) notify-send "$mixer $ctl" ; amixer -q -D $mixer sset "$ctl" toggle ;;
+        4) amixer -q -D $mixer sset "$ctl" "${step}+" unmute ;;
+        5) amixer -q -D $mixer sset "$ctl" "${step}-" unmute ;;
     esac
-    case "$vol" in
-        0)                    icn="" ;;
-        [0-9]|1[0-9])         icn="" ;;
-        2[0-9]|3[0-9])        icn="" ;;
-        4[0-9]|5[0-9])        icn="" ;;
-        6[0-9]|7[0-9]|8[0-9]) icn="" ;;
-        *)                    icn="" ;;
+    case "$volume" in
+        0)                    icon="" ;;
+        [0-9]|1[0-9])         icon="" ;;
+        2[0-9]|3[0-9])        icon="" ;;
+        4[0-9]|5[0-9])        icon="" ;;
+        6[0-9]|7[0-9]|8[0-9]) icon="" ;;
+        *)                    icon="" ;;
     esac
 
-    clr=$(colors 7)
-    printf '%s %s %s' "$clr" "$icn" "$vol%"
+    color=$(colors 7)
+    printf '%s %s %s' "$color" "$icon" "$volume%"
 }
 
 wifi() {
-    int="${BLOCK_INSTANCE:-wlan0}"
-    [ ! -d "/sys/class/net/${int}/wireless" ] ||
-        [ "$(cat /sys/class/net/"$int"/operstate)" = 'down' ] && return 1
-    qlt="$(grep "$int" /proc/net/wireless | awk '{print int($3 * 100 / 70)}')"
+    interface="${BLOCK_INSTANCE:-wlan0}"
+    [ ! -d "/sys/class/net/${interface}/wireless" ] ||
+        [ "$(cat /sys/class/net/"$interface"/operstate)" = 'down' ] && return 1
+    quality="$(grep "$interface" /proc/net/wireless | awk '{print int($3 * 100 / 70)}')"
 
-    case "$qlt" in
-        [0-9]|1[0-9])         clr=$(colors 1); icn="" ;;
-        2[0-9]|3[0-9])        clr=$(colors 3); icn="" ;;
-        4[0-9]|5[0-9])        clr=$(colors 4); icn="" ;;
-        6[0-9]|7[0-9]|8[0-9]) clr=$(colors 2); icn="" ;;
-        *)                    clr=$(colors 7); icn="" ;;
+    case "$quality" in
+        [0-9]|1[0-9])         color=$(colors 1); icon="" ;;
+        2[0-9]|3[0-9])        color=$(colors 3); icon="" ;;
+        4[0-9]|5[0-9])        color=$(colors 4); icon="" ;;
+        6[0-9]|7[0-9]|8[0-9]) color=$(colors 2); icon="" ;;
+        *)                    color=$(colors 7); icon="" ;;
     esac
 
-    printf '%s %s %s%%' "$clr" "$icn" "$qlt"
+    printf '%s %s %s%%' "$color" "$icon" "$quality"
 }

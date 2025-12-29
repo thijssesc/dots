@@ -3,8 +3,16 @@
 # Script to execute programs for dwm.
 #
 
+enable_hkb() {
+    setxkbmap -option ctrl:nocaps
+    xmodmap -e "keycode 9 = grave asciitilde"
+    xmodmap -e "keycode 49 = Escape"
+    xmodmap -e "keycode 22 = backslash bar backslash bar"
+    xmodmap -e "keycode 51 = BackSpace BackSpace BackSpace BackSpace"
+}
+
 # shellcheck disable=SC1090
-(scs && feh --no-fehbg --bg-fill ~/Pictures/walls/alt.*) &
+feh --no-fehbg --bg-fill ~/Pictures/walls/alt.* &
 dwmblocks &
 sxhkd &
 # idl &
@@ -12,18 +20,21 @@ dunst &
 unclutter --jitter 10 --timeout 1 &
 
 # program for both desktop & laptop
-firefox-developer-edition &
+zen-browser &
 # st -n nnnterm -e nnn -CHde &
 st -n tmuxterm -e tmux -2 &
 
 if [ "$TOP_TYPE" = "laptop" ]; then
     # programs only for laptop
+    enable_hkb &
     touchegg &
-    st -n rtorrentterm -e rtorrent &
-    st -n sptterm -e spt &
+    google-chrome-stable &
+    # st -n rtorrentterm -e rtorrent &
+    # st -n sptterm -e spt &
     if [ "$(date '+%u')" -le 5 ]; then
         intellij-idea-ultimate-edition &
         slack &
+        ZSTray &
     fi
 else
     # programs only for desktop

@@ -88,3 +88,5 @@ icy
 # Terminal Aliases
 [ -f "$XDG_CONFIG_HOME/bash/taliases" ] && \
     . "$XDG_CONFIG_HOME/bash/taliases"
+
+. "$HOME/.local/share/../bin/env"

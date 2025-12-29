@@ -11,8 +11,7 @@ alias spt-term='st -n sptterm -e spt'
 alias vim-term='st -n vimterm -e nvim'
 
 # VPN
-alias oc='bkr $HOME/.local/scripts/opc || $HOME/.local/scripts/opc'
-alias poc='sudo pkill openvpn 2>/dev/null'
+alias zscaler='/opt/zscaler/bin/ZSTray'
 
 # Other
 alias tabbed-surf='tabbed -d -r 2 surf -e "surf" 2>/dev/null'
